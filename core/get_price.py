@@ -2,7 +2,8 @@ import os
 from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
-import json
+import json 
+import time
 
 URL_BINANCE = "https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search"
 
@@ -36,9 +37,9 @@ def obtener_valor_usdt():
     data = response.json()['data']
     prices = [float(item["adv"]["price"]) for item in data]
     price = {
-        'Minimo':prices[0],
+        'Minimo':round(prices[0], 2),
         'Promedio':round(sum(prices) / len(prices), 2),
-        'Maximo':prices[-1]
+        'Maximo':round(prices[-1], 2)
     }
 
     return price
@@ -46,7 +47,7 @@ def obtener_valor_usdt():
 def obtener_dolar_bcv():
     """Busca el dato con WebScrapping"""
 
-    respuesta = requests.get(URL_BCV, verify=os.path.join(BASE_DIR, 'bcv.org.ve.crt'), headers=headers)
+    respuesta = requests.get(URL_BCV, verify=os.path.join(BASE_DIR, 'bcv.org.ve.crt'), headers=headers, timeout=10)
 
     if respuesta.status_code == 200:
 
@@ -58,12 +59,12 @@ def obtener_dolar_bcv():
         
         return round(dolar_bcv, 2)
 
-def crear_json():
+def actualizacion_json():
 
-    # data = {
-    #     'price_usdt': obtener_valor_usdt(),
-    #     'price_bcv': obtener_dolar_bcv()
-    # }
+    data = {
+        'price_usdt': obtener_valor_usdt(),
+        'price_bcv': obtener_dolar_bcv()
+    }
 
     try:
         # Crea el archivo por primera vez
@@ -78,7 +79,19 @@ def crear_json():
             json.dump(data, archivo, indent=4)
 
 
+def valor_obtenido():
+    """Obtiene el valor del JSON"""
+    
+    while True:
 
+        # actualizacion_json()
 
+        try:
 
+            with open(ubicacion_json, 'r', encoding='utf-8') as archivo:
+                data = json.load(archivo)
 
+        except Exception as e:
+            pass
+        
+        return data
