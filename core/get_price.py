@@ -4,6 +4,12 @@ import requests
 from bs4 import BeautifulSoup
 import json 
 import time
+import asyncio
+import aiohttp
+import ssl
+import logging
+
+logger = logging.getLogger(__name__)
 
 URL_BINANCE = "https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search"
 
@@ -18,7 +24,9 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
 }
 
-def obtener_valor_usdt():
+ssl_contenido = ssl.create_default_context(cafile=os.path.join(BASE_DIR, 'bcv.org.ve.crt'))
+
+async def obtener_valor_usdt():
     """Busca el dato directamente en el endpoint de Binance"""
 
     payload = {
@@ -28,42 +36,74 @@ def obtener_valor_usdt():
         "payTypes":["PagoMovil"],
         "publisherType":"merchant",
         "page":1,
-        "rows":5
+        "rows":1
     }
 
-    response = requests.post(URL_BINANCE,json=payload, headers=headers, timeout=10)
-    response.raise_for_status()
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.post(URL_BINANCE, json=payload, headers=headers, timeout=aiohttp.ClientTimeout(total=10)) as resp:
+                data = await resp.json()
 
-    data = response.json()['data']
-    prices = [float(item["adv"]["price"]) for item in data]
-    price = {
-        'Minimo':round(prices[0], 2),
-        'Promedio':round(sum(prices) / len(prices), 2),
-        'Maximo':round(prices[-1], 2)
-    }
+        if resp.status != 200:
+            return 0, "No se pudo extraer informacion de la URL de Binance"
 
-    return price
+        prices = [float(item["adv"]["price"]) for item in data['data']]
+        price = {
+            'Minimo':round(prices[0], 2),
+            'Promedio':round(sum(prices) / len(prices), 2),
+            'Maximo':round(prices[-1], 2)
+        }
 
-def obtener_dolar_bcv():
+        price = round(prices[0], 2)
+
+        return price,''
+
+    except asyncio.TimeoutError:
+        return 0, "Timeout consultando Binance"
+    except aiohttp.ClientError:
+        return 0, "Error de conexión con Binance"
+    except (KeyError, ValueError):
+        return 0, "Error procesando datos de Binance"
+
+
+async def obtener_dolar_bcv():
     """Busca el dato con WebScrapping"""
 
-    respuesta = requests.get(URL_BCV, verify=os.path.join(BASE_DIR, 'bcv.org.ve.crt'), headers=headers, timeout=10)
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(URL_BCV, headers=headers, timeout=10, ssl=ssl_contenido) as resp:
+                respuesta = await resp.text()
 
-    if respuesta.status_code == 200:
+        if resp.status != 200:
+            return 0, "BCV no disponible"
 
-        soup = BeautifulSoup(respuesta.text, 'html.parser')
+        soup = BeautifulSoup(respuesta, 'html.parser')
 
         valor_dolar = soup.find('div', id='dolar').find('strong').string
 
         dolar_bcv = float(valor_dolar.replace(" ", "").replace(',', '.'))
         
-        return round(dolar_bcv, 2)
+        return round(dolar_bcv, 2), ''
 
-def actualizacion_json():
+    except ssl.SSLError:
+        return 0, "Error SSL con BCV"
+    except asyncio.TimeoutError:
+        return 0, "Timeout consultando BCV"
+    except aiohttp.ClientError:
+        return 0, "Error de conexión con BCV"
+    except (AttributeError, ValueError):
+        return 0, "Error procesando datos del BCV"
+
+async def actualizacion_json():
+
+    price_usdt, price_bcv = await asyncio.gather(
+        obtener_valor_usdt(),
+        obtener_dolar_bcv()
+    )
 
     data = {
-        'price_usdt': obtener_valor_usdt(),
-        'price_bcv': obtener_dolar_bcv()
+        "price_usdt": price_usdt,
+        "price_bcv": price_bcv,
     }
 
     try:
@@ -79,19 +119,17 @@ def actualizacion_json():
             json.dump(data, archivo, indent=4)
 
 
-def valor_obtenido():
+async def valor_obtenido():
     """Obtiene el valor del JSON"""
     
-    while True:
+    await actualizacion_json()
 
-        # actualizacion_json()
+    try:
 
-        try:
+        with open(ubicacion_json, 'r', encoding='utf-8') as archivo:
+            data = json.load(archivo)
 
-            with open(ubicacion_json, 'r', encoding='utf-8') as archivo:
-                data = json.load(archivo)
-
-        except Exception as e:
-            pass
-        
-        return data
+    except Exception as e:
+        pass
+    
+    return data

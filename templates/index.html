@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swap VES ⇄ USD</title>
+    <link rel="icon" type="icon" href="./static/img/cambio.png">
     <link rel="stylesheet" href="./static/css/output.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./static/js/alertas_web.js"></script>
 </head>
 <body class="bg-slate-900 text-white min-h-screen flex flex-col items-center justify-center p-4">
     <main class="max-w-md w-full space-y-6">
@@ -12,7 +15,6 @@
         <header class="text-center">
             <h1 class="text-3xl font-bold text-blue-400">Swap VES ⇄ USD</h1>
             <p class="text-gray-400 mt-2">Tasa basada en BCV + comparación con USDT (Binance)</p>
-            <p class="text-sm text-gray-500 mt-1">{{ fecha }}</p>
         </header>
 
         <!-- Tarjeta de Tasas -->
@@ -20,16 +22,16 @@
             <div class="grid grid-cols-2 gap-4">
                 <div class="bg-gray-700 rounded-xl p-4 text-center">
                     <div class="text-sm text-gray-400">VES/USD (BCV)</div>
-                    <div class="text-2xl font-bold text-white">{{ bcv_valor }} Bs</div>
+                    <div class="text-2xl font-bold text-white"><span class="precio_bcv">{{ bcv_valor }}</span> Bs</div>
                 </div>
                 <div class="bg-gray-700 rounded-xl p-4 text-center">
                     <div class="text-sm text-gray-400">VES/USDT (Binance)</div>
-                    <div class="text-2xl font-bold text-white">{{ usdt_valor }} Bs</div>
+                    <div class="text-2xl font-bold text-white"><span class="precio_usdt">{{ usdt_valor }}</span> Bs</div>
                 </div>
             </div>
             <div class="mt-4 text-center">
-                <span class="text-sm {% if usdt_valor > bcv_valor %}text-green-400{% else %}text-red-400{% endif %}">
-                    Dif: {% if usdt_valor > bcv_valor %}+{% endif %}{{ "%.2f"|format(usdt_valor - bcv_valor) }} Bs
+                <span class="text-sm text-green-400">
+                    Dif: <span class="diferencia">{{ "%.2f"|format(usdt_valor - bcv_valor) }}</span> Bs
                 </span>
             </div>
         </section>
@@ -42,18 +44,23 @@
                 <div class="flex items-center space-x-2">
 
                     <!-- LOGO DE BANDERA DE VENEZUELA -->
-                    <img id="icon-ve" src="./static/img/VE_C.png" class="w-6 h-6" alt="currency-binance">
-
+                    <div class="w-12 h-8">
+                        <img id="icon-bin-sup" src="./static/img/binance.png" class="hidden scale-125 " alt="currency-binance">
+                        <img id="icon-usd-sup" src="./static/img/usa.png" class="hidden w-full h-full" alt="currency-bcv">
+                        <img id="icon-ves-sup" src="./static/img/VE_C.png" class="w-full h-full" alt="venezuela-bandera">
+                    </div>
+                    
                     <input type="number" id="fromAmount" name="fromAmount" step="0.01" min="0" class="w-full p-4 text-xl bg-gray-900 border border-gray-700 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="0.00" required>
                     <select id="fromCurrency" name="fromCurrency" class="bg-gray-900 border border-gray-700 rounded-2xl p-2 text-xl">
                         <option value="VES">VES</option>
-                        <option value="USD">VES</option>
+                        <option class="hidden" value="USD">USD</option>
+                        <option class="hidden" value="USDT">USDT</option>
                     </select>
                 </div>
             </div>
 
             
-            <!-- Botón de Intercambio -->
+            <!-- Botón de Intercambiar -->
             <div class="flex justify-center">
                 <button type="button" id="swapButton" class="bg-gray-700 hover:bg-gray-600 rounded-full p-3 transition-all duration-200">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -70,8 +77,9 @@
                     
                     <!-- Icono -->
                     <div class="w-10 h-6">
-                        <img id="icon-bin" src="./static/img/binance.png" class="hidden scale-125 " alt="currency-binance">
-                        <img id="icon-usd" src="./static/img/usa.png" class="hidden w-full h-full" alt="currency-bcv">
+                        <img id="icon-bin-inf" src="./static/img/binance.png" class="hidden scale-125 " alt="currency-binance">
+                        <img id="icon-usd-inf" src="./static/img/usa.png" class="w-full h-full" alt="currency-bcv">
+                        <img id="icon-ves-inf" src="./static/img/VE_C.png" class="hidden w-6 h-6" alt="venezuela-bandera">
                     </div>  
 
 
@@ -95,6 +103,7 @@
                     >
                         <option value="USD" selected>USD</option>
                         <option value="USDT">USDT</option>
+                        <option class="hidden" value="VES">VES</option>
                     </select>
                 </div>
 
@@ -115,30 +124,40 @@
 
             <!-- Tasas Abajo -->
             <div class="text-center text-sm text-gray-400">
-                <p>1 USD = {{ "%.2f"|format(bcv_valor) }} VES</p>
-                <p>1 USDT = {{ "%.2f"|format(usdt_valor) }} VES</p>
+                <p>1 USD = <span class="precio_bcv">{{ bcv_valor }}</span> VES</p>
+                <p>1 USDT = <span class="precio_usdt">{{ usdt_valor }}</span> VES</p>
             </div>
 
             <!-- Detalles de Transacción (Acordeón Simple) -->
             <details class="text-sm">
                 <summary class="cursor-pointer text-gray-400 hover:text-white">Detalles de la transacción</summary>
                 <div class="mt-2 space-y-1">
-                    <p>Tasa de cambio actual: {{ bcv_valor }} Bs/USD</p>
+                    <p>Tasa de cambio actual: <span id="tasa-cambio"></span> Bs/USD</p>
                     <p>Total a recibir: <span id="totalReceive">0.00</span></p>
                 </div>
             </details>
 
-            <!-- Botón Intercambiar -->
-            <button type="button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-2xl transition-all duration-200">
+            <!-- Botón Limpiar -->
+            <button type="button" id="Boton-Limpiador" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-2xl transition-all duration-200">
                 Limpiar
             </button>
         </form>
-
-        <!-- Enlace Histórico -->
-        <div class="hidden text-center">
-            <a href="/historical" class="text-cyan-400 underline hover:text-cyan-300">📈 Ver histórico de tasas</a>
-        </div>
     </main>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <script>
+                    if( '{{ category }}' == 'danger' ){
+                        mensajeErrores(`{{ message }}`);
+                    }
+                    else if ('{{ category }}' == 'warning') {
+                        mensajeErrore(`{{ message }}`);
+                    } 
+                </script>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
     <!-- JavaScript -->
     <script>
@@ -148,11 +167,21 @@
         const toCurrency = document.getElementById('toCurrency');
         const swapButton = document.getElementById('swapButton');
         const totalReceive = document.getElementById('totalReceive');
-        const imgBinance = document.getElementById('icon-bin');
-        const imgUSD = document.getElementById('icon-usd');
+        const tasaDeCambio = document.getElementById('tasa-cambio');
+        const botonLimpiador = document.getElementById('Boton-Limpiador');
 
-        const bcvRate = {{ bcv_valor }};
-        const usdtRate = {{ usdt_valor }};
+        // Imagenes inferiores de To
+        const imgBinanceInferior = document.getElementById('icon-bin-inf');
+        const imgUSDInferior = document.getElementById('icon-usd-inf');
+        const imgVESInferior = document.getElementById('icon-ves-inf');
+
+        // Imagenes de la parte superior From
+        const imgBinanceSuperior = document.getElementById('icon-bin-sup');
+        const imgVESSuperior = document.getElementById('icon-ves-sup');
+        const imgUSDSuperior = document.getElementById('icon-usd-sup');
+
+        let bcvRate = {{ bcv_valor }};
+        let usdtRate = {{ usdt_valor }};
         
         // Evento para calcular en tiempo real
         toCurrency.addEventListener('change', () => {
@@ -168,18 +197,103 @@
             let result = 0;
 
             if (fromCurr === 'VES' && toCurr === 'USD') {
-                imgBinance.classList.add('hidden')
-                imgUSD.classList.remove('hidden')
+                imgBinanceInferior.classList.add('hidden')
+                imgUSDInferior.classList.remove('hidden')
+                tasaDeCambio.textContent = bcvRate
                 result = fromVal / bcvRate;
+
             } else if (fromCurr === 'VES' && toCurr === 'USDT') {
-                imgUSD.classList.add('hidden')
-                imgBinance.classList.remove('hidden')
+                imgUSDInferior.classList.add('hidden')
+                imgBinanceInferior.classList.remove('hidden')
+                tasaDeCambio.textContent = usdtRate
                 result = fromVal / usdtRate;
-            }
-            
+
+            } else if (fromCurr === 'USD' && toCurr === 'VES') {
+
+                imgBinanceSuperior.classList.add('hidden')
+                imgUSDSuperior.classList.remove('hidden')
+                tasaDeCambio.textContent = bcvRate
+                result = bcvRate * fromVal;
+
+            } else if (fromCurr === 'USDT' && toCurr === 'VES') {
+
+                imgBinanceSuperior.classList.remove('hidden')
+                imgUSDSuperior.classList.add('hidden')
+                tasaDeCambio.textContent = usdtRate
+                result = usdtRate * fromVal;
+            } 
+
+            if (!fromAmount.value) {
+                toAmount.value = '';
+                totalReceive.textContent = '';
+                return;
+            };
+
             toAmount.value = result.toFixed(2);
             totalReceive.textContent = result.toFixed(2);
-        }
+
+        };
+
+
+        // Evento al clickear el boton de swap
+        swapButton.addEventListener('click', () => {
+            
+            opcionSeleccionarFrom = fromCurrency.options
+            opcionSeleccionarTo = toCurrency.options
+
+            // SE MUESTRAN AHORA LAS OPCIONES OCULTAS DEL FROM
+            for (var i = 0; i < opcionSeleccionarFrom.length; i++) {
+                if (opcionSeleccionarFrom[i].classList.contains('hidden')) {
+                    opcionSeleccionarFrom[i].classList.remove('hidden')
+
+                    if (opcionSeleccionarFrom[i].value === 'USD' && !(opcionSeleccionarFrom[i].classList.contains('hidden'))) {
+                        opcionSeleccionarFrom[i].selected = true
+                        imgVESSuperior.classList.add('hidden')
+                        imgUSDSuperior.classList.remove('hidden')
+
+                    
+                    } else if (opcionSeleccionarFrom[i].value === 'VES' && !(opcionSeleccionarFrom[i].classList.contains('hidden'))) {
+                        opcionSeleccionarFrom[i].selected = true
+                        imgVESSuperior.classList.remove('hidden')
+                        imgBinanceSuperior.classList.add('hidden')
+                        imgUSDSuperior.classList.add('hidden')
+                    };
+
+                } else {
+                    opcionSeleccionarFrom[i].classList.add('hidden')
+                };
+
+            };
+
+            // SE MUESTRAN AHORA LAS OPCIONES OCULTAS DEL TO
+            for (var i = 0; i < opcionSeleccionarTo.length; i++) {
+                if (opcionSeleccionarTo[i].classList.contains('hidden')) {
+                    opcionSeleccionarTo[i].classList.remove('hidden')
+
+                    if (opcionSeleccionarTo[i].value === 'VES' && !(opcionSeleccionarTo[i].classList.contains('hidden'))) {
+                        opcionSeleccionarTo[i].selected = true
+                        imgVESInferior.classList.remove('hidden')
+                        imgUSDInferior.classList.add('hidden')
+                        imgBinanceInferior.classList.add('hidden')
+
+                    
+                    } else if (opcionSeleccionarTo[i].value === 'USD' && !(opcionSeleccionarTo[i].classList.contains('hidden'))) {
+                        opcionSeleccionarTo[i].selected = true
+                        imgUSDInferior.classList.remove('hidden')
+                        imgVESInferior.classList.add('hidden')
+                        imgBinanceInferior.classList.add('hidden')
+
+                    };
+
+                } else {
+                    opcionSeleccionarTo[i].classList.add('hidden')
+                };
+
+            };
+
+            limpiarInput()
+            
+        });
 
         // Evento para calcular en tiempo real
         fromAmount.addEventListener('input', calculateTo);
@@ -189,8 +303,48 @@
             calculateTo();
         });
 
+        botonLimpiador.addEventListener('click', () => {
+            limpiarInput()
+        })
+
+        function limpiarInput(){
+            fromAmount.value = '';
+            toAmount.value = ''
+            totalReceive.textContent = '';
+        }
+
+        async function actualizarTasas() {
+            const res = await fetch('/price/ves-prices');
+            if (!res.ok) throw new Error('No response');
+            const data = await res.json();
+
+            usdtRate = (data.usdt_valor).toFixed(2);
+            bcvRate = (data.bcv_valor).toFixed(2);
+
+            actulizadorUSDT = document.querySelectorAll('.precio_usdt');
+            actulizadorBCV = document.querySelectorAll('.precio_bcv');
+            
+
+            actulizadorBCV.forEach(element => {
+                element.textContent = bcvRate; 
+            });
+
+            actulizadorUSDT.forEach(element => {
+                element.textContent = usdtRate;
+            });
+
+            valorDiferencia = document.querySelector('.diferencia');
+            valorDiferencia.textContent = (usdtRate - bcvRate).toFixed(2);
+            
+        }
+
+        // Cada 60 segundos
+        setInterval(actualizarTasas, 60000);
+
         // Inicializar
         calculateTo();
     </script>
+
+    
 </body>
 </html>
