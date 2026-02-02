@@ -95,6 +95,11 @@ async def obtener_dolar_bcv():
 
     ssl_contenido = crear_contexto_ssl()
 
+    if ssl_contenido is False:
+        ssl_contenido = ssl.create_default_context()
+        ssl_contenido.check_hostname = False
+        ssl_contenido.verify_mode = ssl.CERT_NONE
+        
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(URL_BCV, headers=headers, timeout=10, ssl=ssl_contenido) as resp:
