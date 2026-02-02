@@ -8,12 +8,7 @@ import aiohttp
 import ssl
 import logging
 from dotenv import load_dotenv
-# --- PRUEBA DE IDENTIDAD DE SSL ---
-try:
-    import ssl
-    print(f"✅ SSL Módulo: CARGADO (Versión OpenSSL: {ssl.OPENSSL_VERSION})", flush=True)
-except ImportError:
-    print("❌ SSL Módulo: NO ENCONTRADO (Esto es casi imposible en Vercel)", flush=True)
+
 # Cargar el archivo .env
 load_dotenv()
 
@@ -25,7 +20,7 @@ URL_BCV = os.getenv('URL_BCV')
 
 CURRENT_DIR = Path(__file__).resolve().parent
 
-CERT_PATH = str(CURRENT_DIR / 'bcvcert.crt')
+CERT_PATH = os.path.join(CURRENT_DIR, 'bcvcert.crt')
 
 if os.environ.get('VERCEL'):
     # En la nube: usamos la carpeta temporal permitida
