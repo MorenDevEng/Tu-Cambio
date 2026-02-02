@@ -51,9 +51,10 @@ def run_async(consulta):
 
     return loop.run_until_complete(consulta)
 
+# Para vercel
+app = app
 
 # Solo para ejecución local
 if __name__ == "__main__":
     app.run(debug=True)
 
-app = app
