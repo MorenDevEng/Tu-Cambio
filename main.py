@@ -6,7 +6,10 @@ from dotenv import load_dotenv
 # Cargar el archivo .env
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, 
+            static_folder='static',
+            template_folder='templates'
+            )
 app.secret_key = os.getenv('SECRET_KEY', 'dev-key-default')
 
 # 1. Convertimos las rutas a 'async def'

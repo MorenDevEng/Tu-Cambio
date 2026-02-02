@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "buildCommand": "bash build.sh",
   "installCommand": "bash build.sh",
   "builds": [
     {
