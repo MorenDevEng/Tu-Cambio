@@ -5,7 +5,7 @@
   "builds": [
     {
       "src": "main.py",
-      "use": "@vercel/python3.12"
+      "use": "@vercel/python"
     }
   ],
   "rewrites": [
