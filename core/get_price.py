@@ -82,22 +82,12 @@ def crear_contexto_ssl():
         try:
             # Si existe, intentamos crear el contexto con el certificado
             contexto = ssl.create_default_context(cafile=CERT_PATH)
-            print(f"✅ SSL: Certificado BCV cargado desde {CERT_PATH}", flush=True)
             return contexto
+        
         except Exception as e:
-            print(f"⚠️ SSL: Error cargando archivo .crt: {e}. Entrando a modo permisivo.", flush=True)
-            # Si el archivo está corrupto o falla, no bloqueamos la app, vamos al modo permisivo abajo
-    else:
-        print(f"❌ SSL: No se encontró {CERT_PATH}. Activando modo rescate.", flush=True)
+            return False
 
-    # 2. MODO RESCATE (Se ejecuta si el archivo no existe o si falló la carga)
-    contexto = ssl.create_default_context()
-    contexto.check_hostname = False
-    contexto.verify_mode = ssl.CERT_NONE
-    print("🚀 SSL: Modo permisivo activado (Conexión sin verificación)", flush=True)
-    
-    return contexto
-
+    return False
 
 async def obtener_dolar_bcv():
     """Busca el dato con WebScrapping"""
