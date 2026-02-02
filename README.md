@@ -89,8 +89,8 @@ Tu-Cambio/
 
 1️⃣ Clonar el repositorio
 ```bash
-git clone https://github.com/tu-usuario/tu-repo.git
-cd tu-repo
+git clone https://github.com/MorenDevEng/Tu-Cambio.git
+cd Tu-Cambio
 ```
 
 2️⃣ Crear entorno virtual (opcional pero recomendado)
@@ -107,7 +107,7 @@ pip install -r requirements.txt
 
 4️⃣ Ejecutar la aplicación
 ```bash
-python main.py
+flask --app main run
 ```
 
 Luego abre tu navegador en:
