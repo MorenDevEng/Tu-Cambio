@@ -1,49 +1,44 @@
 import os
 from flask import Flask, render_template, flash
 from core.get_price import valor_obtenido
+import asyncio
 from dotenv import load_dotenv
 
-# Cargar el archivo .env
-load_dotenv()
+app = Flask(__name__)
 
-app = Flask(__name__, 
-            static_folder='static',
-            template_folder='templates'
-            )
-app.secret_key = os.getenv('SECRET_KEY', 'dev-key-default')
+app.secret_key = os.getenv('SECRET_KEY')
 
-# 1. Convertimos las rutas a 'async def'
 @app.route('/')
-async def home():
-    # 2. Usamos 'await' directamente. Flask se encarga del resto.
-    try:
-        valor = await valor_obtenido()
-        
-        usdt_valor, err_usdt = valor['price_usdt']
-        bcv_valor, err_bcv = valor['price_bcv']
+def home():
 
-        if err_bcv and err_usdt:
-            flash(f"{err_bcv} {err_usdt}", "danger")
-        elif err_bcv:
-            flash(err_bcv, "warning")
-        elif err_usdt:
-            flash(err_usdt, "warning")
+    valor = asyncio.run(valor_obtenido())
+    
+    usdt_valor, err_usdt = valor['price_usdt']
+    bcv_valor, err_bcv = valor['price_bcv']
 
-        return render_template('index.html', usdt_valor=usdt_valor, bcv_valor=bcv_valor)
-    except Exception as e:
-        return f"Error obteniendo precios: {e}", 500
+    if err_bcv and err_usdt:
+        mens = err_bcv+' '+err_usdt
+        flash(mens, "danger")
+
+    elif err_bcv:
+        flash(err_bcv, "warning")
+    
+    elif err_usdt:
+        flash(err_usdt, "warning")
+
+    return render_template('index.html', usdt_valor = usdt_valor, bcv_valor = bcv_valor)
+
 
 @app.route("/price/ves-prices")
-async def price_usdt_usd_ves():
-    # 3. Aplicamos lo mismo aquí
-    valor = await valor_obtenido()
-    
+def price_usdt_usd_ves():
+
+    valor = asyncio.run(valor_obtenido())
+
     usdt_valor = valor['price_usdt'][0]
     bcv_valor = valor['price_bcv'][0]
 
-    return {"usdt_valor": usdt_valor, "bcv_valor": bcv_valor}
+    return {"usdt_valor":usdt_valor, "bcv_valor":bcv_valor}
 
-app = app
-
-if __name__ == "__main__":
-    app.run(debug=True)
+# Para que Vercel lo ejecute
+if __name__=='__main__':
+    app.run()
