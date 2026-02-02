@@ -19,10 +19,7 @@ URL_BINANCE = os.getenv('URL_BINANCE')
 
 URL_BCV = os.getenv('URL_BCV')
 
-if os.environ.get('VERCEL'):
-    BASE_DIR = Path("/tmp") # Única carpeta con permiso de escritura
-else:
-    BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent
 
 ubicacion_json = BASE_DIR / "dolar_ves.json"
 
