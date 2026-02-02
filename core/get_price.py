@@ -35,7 +35,7 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
 }
 
-ssl_contenido = ssl.create_default_context(cafile=CURRENT_DIR / 'bcvcert.crt')
+ssl_contenido = ssl.create_default_context(cafile=CERT_PATH)
 
 async def obtener_valor_usdt():
     """Busca el dato directamente en el endpoint de Binance"""
@@ -82,7 +82,7 @@ async def obtener_dolar_bcv():
 
     try:
         async with aiohttp.ClientSession() as session:
-            async with session.get(URL_BCV, headers=headers, timeout=10, ssl=ssl_contenido) as resp:
+            async with session.get(URL_BCV, headers=headers, timeout=10, ssl=ssl.create_default_context(cafile=CERT_PATH)) as resp:
                 respuesta = await resp.text()
 
         if resp.status != 200:
