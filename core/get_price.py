@@ -27,7 +27,7 @@ else:
     # En tu PC, se guarda en la carpeta del script como siempre
     BASE_DIR = Path(__file__).resolve().parent
 
-ubicacion_json = os.path.join(BASE_DIR, 'dolar_ves.json')
+ubicacion_json = BASE_DIR / "dolar_ves.json"
 
 headers = {
     "Content-Type": "application/json",
