@@ -86,11 +86,15 @@ def crear_contexto_ssl():
             print(f"✅ SSL: Certificado BCV cargado desde {CERT_PATH}", flush=True)
         except Exception as e:
             print(f"⚠️ SSL: Error cargando archivo .crt: {e}. Usando modo permisivo.", flush=True)
-            contexto = False
+            contexto = ssl.create_default_context()
+            contexto.check_hostname = False
+            contexto.verify_mode = ssl.CERT_NONE
             
     else:
         print(f"❌ SSL: No se encontró {CERT_PATH}. Activando modo rescate.", flush=True)
-        contexto = False
+        contexto = ssl.create_default_context()
+        contexto.check_hostname = False
+        contexto.verify_mode = ssl.CERT_NONE
         
     return contexto
 
