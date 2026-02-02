@@ -80,7 +80,6 @@ def crear_ssl_contenido():
 
     if os.path.exists(CERT_PATH):
         try:
-            contexto.load_verify_locations(cafile=CERT_PATH)
             return contexto 
         except Exception as e:
             return False     
