@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swap VES ⇄ USD</title>
-    <link rel="icon" type="icon" href="./static/img/cambio.png">
-    <link rel="stylesheet" href="./static/css/output.css">
+    <link rel="icon" type="icon" href="/static/img/cambio.png">
+    <link rel="stylesheet" href="/static/css/output.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="./static/js/alertas_web.js"></script>
+    <script src="/static/js/alertas_web.js"></script>
 </head>
 <body class="bg-slate-900 text-white min-h-screen flex flex-col items-center justify-center p-4"
   data-bcv="{{ bcv_valor }}"
@@ -48,9 +48,9 @@
 
                     <!-- LOGO DE BANDERA DE VENEZUELA -->
                     <div class="w-12 h-8">
-                        <img id="icon-bin-sup" src="./static/img/binance.png" class="hidden scale-125 " alt="currency-binance">
-                        <img id="icon-usd-sup" src="./static/img/usa.png" class="hidden w-full h-full" alt="currency-bcv">
-                        <img id="icon-ves-sup" src="./static/img/VE_C.png" class="w-full h-full" alt="venezuela-bandera">
+                        <img id="icon-bin-sup" src="/static/img/binance.png" class="hidden scale-125 " alt="currency-binance">
+                        <img id="icon-usd-sup" src="/static/img/usa.png" class="hidden w-full h-full" alt="currency-bcv">
+                        <img id="icon-ves-sup" src="/static/img/VE_C.png" class="w-full h-full" alt="venezuela-bandera">
                     </div>
                     
                     <input type="number" id="fromAmount" name="fromAmount" step="0.01" min="0" class="w-full p-4 text-xl bg-gray-900 border border-gray-700 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="0.00" required>
@@ -80,9 +80,9 @@
                     
                     <!-- Icono -->
                     <div class="w-10 h-6">
-                        <img id="icon-bin-inf" src="./static/img/binance.png" class="hidden scale-125 " alt="currency-binance">
-                        <img id="icon-usd-inf" src="./static/img/usa.png" class="w-full h-full" alt="currency-bcv">
-                        <img id="icon-ves-inf" src="./static/img/VE_C.png" class="hidden w-6 h-6" alt="venezuela-bandera">
+                        <img id="icon-bin-inf" src="/static/img/binance.png" class="hidden scale-125 " alt="currency-binance">
+                        <img id="icon-usd-inf" src="/static/img/usa.png" class="w-full h-full" alt="currency-bcv">
+                        <img id="icon-ves-inf" src="/static/img/VE_C.png" class="hidden w-6 h-6" alt="venezuela-bandera">
                     </div>  
 
 
@@ -113,11 +113,11 @@
                 <!-- Fuente -->
                 <div class="flex-row items-center mt-2 text-xs text-gray-400">
                     <div class="flex items-center">
-                        <img src="./static/img/binance.png" class="w-6 h-6 mr-1 mb-1">
+                        <img src="/static/img/binance.png" class="w-6 h-6 mr-1 mb-1">
                         <span>Binance P2P</span>
                     </div>
                     <div class="flex items-center">
-                        <img id="icon-usd" src="./static/img/usa.png" class="w-4 h-4 ml-1 mr-2">
+                        <img id="icon-usd" src="/static/img/usa.png" class="w-4 h-4 ml-1 mr-2">
                         <span>Banco Central de Venezuela</span>
                     </div>
 
@@ -164,6 +164,6 @@
     {% endwith %}
 
     <!-- JavaScript - Funciones -->
-    <script src="./static/js/actualizacion.js"></script>
+    <script src="/static/js/actualizacion.js"></script>
 </body>
 </html>

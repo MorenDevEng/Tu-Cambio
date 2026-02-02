@@ -101,7 +101,7 @@ pip install -r requirements.txt
 
 4️⃣ Ejecutar la aplicación
 ```bash
-flask --app main run
+python main.py
 ```
 
 Luego abre tu navegador en:
