@@ -20,14 +20,36 @@ URL_BCV = os.getenv('URL_BCV')
 
 BASE_CERT = Path(__file__).resolve().parent
 
+CERT_PATH = str(BASE_CERT / 'bcv.org.ve.crt')
+
+# --- BLOQUE DE DIAGNÓSTICO ---
+print(f"🔍 [DEBUG] Buscando certificado en: {CERT_PATH}")
+
+if os.path.exists(CERT_PATH):
+    print(f"✅ [OK] Certificado encontrado. Tamaño: {os.path.getsize(CERT_PATH)} bytes")
+else:
+    print(f"❌ [ERROR] Certificado NO encontrado en esa ruta.")
+    print(f"📂 [FILES] Contenido actual de la carpeta '{BASE_CERT}':")
+    try:
+        for f in os.listdir(BASE_CERT):
+            print(f"  - {f}")
+    except Exception as e:
+        print(f"  - No se pudo listar: {e}")
+
+# 2. Creación del contexto (esto fallará si el archivo no existe)
+try:
+    ssl_contenido = ssl.create_default_context(cafile=CERT_PATH)
+    print("✅ [SSL] Contexto creado exitosamente")
+except Exception as e:
+    print(f"❌ [SSL] Falló al crear el contexto: {e}")
+# ------------------------------
+
 if os.environ.get('VERCEL'):
     # En la nube: usamos la carpeta temporal permitida
     BASE_DIR = Path("/tmp")
 else:
     # En tu PC: usamos la carpeta donde esté el script
     BASE_DIR = Path(__file__).resolve().parent
-
-CERT_PATH = str(BASE_CERT / 'bcv.org.ve.crt')
 
 ubicacion_json = str(BASE_DIR / "dolar_ves.json")
 
@@ -36,7 +58,7 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
 }
 
-ssl_contenido = ssl.create_default_context(cafile=CERT_PATH)
+# ssl_contenido = ssl.create_default_context(cafile=CERT_PATH)
 
 async def obtener_valor_usdt():
     """Busca el dato directamente en el endpoint de Binance"""
