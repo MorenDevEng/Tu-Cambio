@@ -2,7 +2,7 @@
 echo "🔥 [FORCE INSTALL] Eliminando cache y forzando descarga..."
 
 # 1. Instalación agresiva de dependencias
-python3.12 -m pip install --no-cache-dir --force-reinstall -vv -r requirements.txt
+python3.12 -m pip install -r requirements.txt --break-system-packages
 
 echo "📋 Verificando dependencias instaladas:"
 python3.12 -m pip show python-dotenv
