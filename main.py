@@ -14,7 +14,7 @@ app.secret_key = os.getenv('SECRET_KEY')
 @app.get('/')
 def home():
 
-    valor = asyncio.run(valor_obtenido())
+    valor = run_async(valor_obtenido())
 
     usdt_valor, err_usdt = valor['price_usdt']
     bcv_valor, err_bcv = valor['price_bcv']
@@ -35,7 +35,8 @@ def home():
 @app.route("/price/ves-prices")
 def price_usdt_usd_ves():
 
-    valor = asyncio.run(valor_obtenido())
+    valor = run_async(valor_obtenido())
+
 
     usdt_valor, err_usdt = valor['price_usdt']
     bcv_valor, err_bcv = valor['price_bcv']
@@ -51,6 +52,16 @@ def price_usdt_usd_ves():
         flash(err_usdt, "warning")
 
     return {"usdt_valor":usdt_valor, "bcv_valor":bcv_valor}
+
+
+def run_async(consulta):
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        return asyncio.run(consulta)
+
+    return loop.run_until_complete(consulta)
+
 
 # Solo para ejecución local
 if __name__ == "__main__":
