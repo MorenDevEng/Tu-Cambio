@@ -74,32 +74,14 @@ async def obtener_valor_usdt():
     except (KeyError, ValueError):
         return 0, "Error procesando datos de Binance"
 
-def crear_contexto_ssl():
-    """Crea un contexto de BCV con modo rescate automático"""
-    
-    contexto = ssl.create_default_context(cafile=CERT_PATH)
-
-    # 1. Verificar primero si el archivo existe
-    if contexto.check_hostname:
-        try:
-            # Si existe, lo retorna
-            return contexto
-        
-        except Exception as e:
-            return False
-
-    return False
-
 async def obtener_dolar_bcv():
     """Busca el dato con WebScrapping"""
 
-    ssl_contenido = crear_contexto_ssl()
+    ssl_contenido = ssl.create_default_context(cafile=CERT_PATH)
 
-    if ssl_contenido is False:
-        ssl_contenido = ssl.create_default_context()
-        ssl_contenido.check_hostname = False
-        ssl_contenido.verify_mode = ssl.CERT_NONE
-        
+    if not ssl_contenido:
+        ssl_contenido = False
+
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(URL_BCV, headers=headers, timeout=10, ssl=ssl_contenido) as resp:
