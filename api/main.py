@@ -11,7 +11,7 @@ app = Flask(__name__,
             template_folder='../templates', 
             static_folder='../static')
 
-app.secret_key = os.getenv('SECRET_KEY')
+app.secret_key = os.getenv('SECRET_KEY', 'dev-key-default')
 
 @app.get('/')
 def home():
@@ -52,6 +52,9 @@ def run_async(consulta):
         return asyncio.run(consulta)
 
     return loop.run_until_complete(consulta)
+
+
+app.run()
 
 # Solo para ejecución local
 if __name__ == "__main__":
