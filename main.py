@@ -7,9 +7,7 @@ from dotenv import load_dotenv
 # Cargar el archivo .env
 load_dotenv()
 
-app = Flask(__name__, 
-            template_folder='../templates', 
-            static_folder='../static')
+app = Flask(__name__)
 
 app.secret_key = os.getenv('SECRET_KEY', 'dev-key-default')
 
@@ -53,8 +51,6 @@ def run_async(consulta):
 
     return loop.run_until_complete(consulta)
 
-
-app.run()
 
 # Solo para ejecución local
 if __name__ == "__main__":
