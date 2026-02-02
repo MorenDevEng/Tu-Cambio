@@ -106,7 +106,7 @@ async def obtener_dolar_bcv():
 
     try:
         async with aiohttp.ClientSession() as session:
-            async with session.get(URL_BCV, headers=headers, timeout=10, ssl=False) as resp:
+            async with session.get(URL_BCV, headers=headers, timeout=10, ssl=ssl_contenido) as resp:
                 respuesta = await resp.text()
 
         if resp.status != 200:
