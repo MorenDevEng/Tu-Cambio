@@ -19,15 +19,9 @@ URL_BINANCE = os.getenv('URL_BINANCE')
 
 URL_BCV = os.getenv('URL_BCV')
 
-# Si esta en Vercel o en local
-if os.environ.get('VERCEL'):
-    # En Vercel, forzamos el guardado en la carpeta temporal
-    BASE_DIR = Path("/tmp")
-else:
-    # En tu PC, se guarda en la carpeta del script como siempre
-    BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent
 
-ubicacion_json = BASE_DIR / "dolar_ves.json"
+ubicacion_json = os.path.join(BASE_DIR, 'dolar_ves.json')
 
 headers = {
     "Content-Type": "application/json",
