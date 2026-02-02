@@ -48,6 +48,8 @@ Tu-Cambio/
 │
 ├── env_calculadora_VES       # Entorno virtual
 │
+├── api/main.py               # App de Flask
+│
 ├── node_modules/             # Dependencias frontend
 │
 ├── static/
@@ -71,7 +73,6 @@ Tu-Cambio/
 ├── .env                      # Variables de entorno
 ├── .gitignore
 ├── build_file.sh             # Build para Vercel
-├── main.py                   # App Flask 
 ├── package.json              # Tailwind / frontend
 ├── package-lock.json
 ├── requirements.txt          # Python deps
