@@ -4,7 +4,7 @@ echo "🚀 [BUILD] Iniciando instalación..."
 # Instalamos las dependencias
 if [ -f requirements.txt ]; then
     # Usamos --user o simplemente confiamos en el entorno virtual de Vercel
-    pip install -r requirements.txt
+    pip install -r requirements.txt --break-system-packages
     echo "✅ Dependencias instaladas."
 else
     echo "❌ No se encontró requirements.txt"
