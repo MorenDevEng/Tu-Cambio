@@ -48,7 +48,7 @@ Estructura del Proyecto
 Tu-Cambio/
 │
 ├── core/
-│   ├── bcv.org.ve.crt    # Certificado SSL para BCV
+│   ├── bcv.org.ve.crt        # Certificado SSL para BCV
 │   ├── dolar_ves.json        # Cache local de precios
 │   └── get_price.py          # Lógica de consulta (Binance + BCV)  
 │
