@@ -21,6 +21,8 @@ URL_BCV = os.getenv('URL_BCV')
 
 BASE_DIR = Path(__file__).resolve().parent
 
+CERT_PATH = str(BASE_DIR/'bcv.org.ve.crt')
+
 ubicacion_json = BASE_DIR / "dolar_ves.json"
 
 headers = {
@@ -28,7 +30,7 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
 }
 
-ssl_contenido = ssl.create_default_context(cafile=os.path.join(BASE_DIR, 'bcv.org.ve.crt'))
+ssl_contenido = ssl.create_default_context(cafile=CERT_PATH)
 
 async def obtener_valor_usdt():
     """Busca el dato directamente en el endpoint de Binance"""
