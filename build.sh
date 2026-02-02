@@ -1,9 +1,12 @@
 #!/bin/bash
-echo "🚀 [BUILD] Forzando descarga limpia de dependencias..."
+echo "🔥 [FORCE BUILD] Borrando rastros e instalando desde cero..."
 
-# Forzamos la reinstalación ignorando la caché
-python3.12 -m pip install --no-cache-dir --force-reinstall -r requirements.txt
+# Forzamos a que use el pip de la versión de Python actual
+python3 -m pip install --upgrade pip
 
-# Listamos para confirmar en el log de Vercel
-echo "📋 Paquetes verificados:"
-pip list | grep -E "Flask|asgiref|python-dotenv"
+# --no-cache-dir: No uses nada guardado
+# -vv: Super verboso (verás cada link de descarga)
+python3 -m pip install --no-cache-dir --force-reinstall -vv -r requirements.txt
+
+echo "📊 Verificación de paquetes instalados:"
+pip list
