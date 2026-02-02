@@ -19,7 +19,7 @@ URL_BCV = os.getenv('URL_BCV')
 
 CURRENT_DIR = Path(__file__).resolve().parent
 
-CERT_PATH = os.path.join(CURRENT_DIR, 'bcvcert.crt')
+CERT_PATH = str(CURRENT_DIR / 'bcvcert.crt')
 
 if os.environ.get('VERCEL'):
     # En la nube: usamos la carpeta temporal permitida
