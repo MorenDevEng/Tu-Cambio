@@ -4,11 +4,11 @@
   "installCommand": "bash build.sh",
   "builds": [
     {
-      "src": "main.py",
+      "src": "app.py",
       "use": "@vercel/python"
     }
   ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "main.py" }
+    { "source": "/(.*)", "destination": "app.py" }
   ]
 }
