@@ -17,8 +17,12 @@ const imgBinanceSuperior = document.getElementById('icon-bin-sup');
 const imgVESSuperior = document.getElementById('icon-ves-sup');
 const imgUSDSuperior = document.getElementById('icon-usd-sup');
 
-let bcvRate = {{ bcv_valor }};
-let usdtRate = {{ usdt_valor }};
+// obtengo la etiqueta body
+const body = document.body;
+
+// Obtenga del body las variables
+let bcvRate = parseFloat(body.dataset.bcv);
+let usdtRate = parseFloat(body.dataset.usdt);
 
 // Evento para calcular en tiempo real
 toCurrency.addEventListener('change', () => {
