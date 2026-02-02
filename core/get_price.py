@@ -79,7 +79,7 @@ async def obtener_dolar_bcv():
 
     ssl_contenido = ssl.create_default_context(cafile=CERT_PATH)
 
-    if not ssl_contenido:
+    if not ssl_contenido.check_hostname:
         ssl_contenido = False
 
     try:
