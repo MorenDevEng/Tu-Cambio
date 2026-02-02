@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 app.secret_key = os.getenv('SECRET_KEY', 'dev-key-default')
 
-@app.get('/')
+@app.route('/')
 def home():
 
     valor = run_async(valor_obtenido())
@@ -50,6 +50,9 @@ def run_async(consulta):
         return asyncio.run(consulta)
 
     return loop.run_until_complete(consulta)
+
+
+app = app
 
 # Solo para ejecución local
 if __name__ == "__main__":
