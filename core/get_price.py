@@ -75,27 +75,27 @@ async def obtener_valor_usdt():
         return 0, "Error procesando datos de Binance"
 
 def crear_contexto_ssl():
-    """Crea un contexto de BCV"""
-    # 1. Crea el contexto del ssl con la ruta
-    contexto = ssl.create_default_context(cafile=CERT_PATH)
+    """Crea un contexto de BCV con modo rescate automático"""
     
-    # 2. Intentar inyectar el del BCV
+    # 1. Verificar primero si el archivo existe
     if os.path.exists(CERT_PATH):
         try:
-            contexto.load_verify_locations(cafile=CERT_PATH)
+            # Si existe, intentamos crear el contexto con el certificado
+            contexto = ssl.create_default_context(cafile=CERT_PATH)
             print(f"✅ SSL: Certificado BCV cargado desde {CERT_PATH}", flush=True)
+            return contexto
         except Exception as e:
-            print(f"⚠️ SSL: Error cargando archivo .crt: {e}. Usando modo permisivo.", flush=True)
-            contexto = ssl.create_default_context()
-            contexto.check_hostname = False
-            contexto.verify_mode = ssl.CERT_NONE
-            
+            print(f"⚠️ SSL: Error cargando archivo .crt: {e}. Entrando a modo permisivo.", flush=True)
+            # Si el archivo está corrupto o falla, no bloqueamos la app, vamos al modo permisivo abajo
     else:
         print(f"❌ SSL: No se encontró {CERT_PATH}. Activando modo rescate.", flush=True)
-        contexto = ssl.create_default_context()
-        contexto.check_hostname = False
-        contexto.verify_mode = ssl.CERT_NONE
-        
+
+    # 2. MODO RESCATE (Se ejecuta si el archivo no existe o si falló la carga)
+    contexto = ssl.create_default_context()
+    contexto.check_hostname = False
+    contexto.verify_mode = ssl.CERT_NONE
+    print("🚀 SSL: Modo permisivo activado (Conexión sin verificación)", flush=True)
+    
     return contexto
 
 
@@ -106,7 +106,7 @@ async def obtener_dolar_bcv():
 
     try:
         async with aiohttp.ClientSession() as session:
-            async with session.get(URL_BCV, headers=headers, timeout=10, ssl=ssl_contenido) as resp:
+            async with session.get(URL_BCV, headers=headers, timeout=10, ssl=False) as resp:
                 respuesta = await resp.text()
 
         if resp.status != 200:
