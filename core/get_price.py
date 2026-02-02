@@ -19,7 +19,10 @@ URL_BINANCE = os.getenv('URL_BINANCE')
 
 URL_BCV = os.getenv('URL_BCV')
 
-BASE_DIR = Path(__file__).resolve().parent
+if os.environ.get('VERCEL'):
+    BASE_DIR = Path("/tmp")
+else:
+    BASE_DIR = Path(__file__).resolve().parent
 
 ubicacion_json = os.path.join(BASE_DIR, 'dolar_ves.json')
 
