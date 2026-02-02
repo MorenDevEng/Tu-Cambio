@@ -74,23 +74,14 @@ async def obtener_valor_usdt():
     except (KeyError, ValueError):
         return 0, "Error procesando datos de Binance"
 
-def crear_ssl_contenido():
-
-    contexto = ssl.create_default_context(cafile=CERT_PATH)
-
-    if os.path.exists(CERT_PATH):
-        try:
-            return contexto 
-        except Exception as e:
-            return False     
-    
-    return False
-
-
 async def obtener_dolar_bcv():
     """Busca el dato con WebScrapping"""
 
-    ssl_contenido = crear_ssl_contenido()
+    # En modo local puedes utilizar esta opcion y comentar ssl en False
+    # ssl_contenido = ssl.create_default_context(cafile=CERT_PATH)
+
+    # En vercel utiliza esta opcion para evitar problema con el archivo
+    ssl_contenido = False
     
     try:
         async with aiohttp.ClientSession() as session:
