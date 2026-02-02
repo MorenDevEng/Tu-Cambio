@@ -1,12 +1,23 @@
 #!/bin/bash
 
-echo "--- Iniciando Build Custom ---"
+echo "🚀 [BUILD] Iniciando proceso de instalación detallado..."
 
-# 1. Asegurar que pip esté actualizado
+# Mostrar la versión de Python que está usando Vercel
+python3 --version
+
+# Actualizar pip y mostrar progreso
+echo "📦 Actualizando pip..."
 python3 -m pip install --upgrade pip
 
-# 2. Instalar las dependencias del archivo requirements.txt
-# El flag --force-reinstall asegura que no use caché corrupta
-pip install --force-reinstall -r requirements.txt
+# Instalar dependencias con VERBOSE (-v) para ver la descarga
+echo "📥 Instalando dependencias desde requirements.txt..."
+if [ -f requirements.txt ]; then
+    pip install -v -r requirements.txt
+    echo "✅ [SUCCESS] Todas las dependencias se instalaron."
+else
+    echo "❌ [ERROR] No se encontró el archivo requirements.txt en la raíz."
+    exit 1
+fi
 
-echo "--- Dependencias instaladas con éxito ---"
+echo "📋 Listado final de paquetes instalados:"
+pip freeze
