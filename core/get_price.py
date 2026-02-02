@@ -8,12 +8,16 @@ import asyncio
 import aiohttp
 import ssl
 import logging
+from dotenv import load_dotenv
+
+# Cargar el archivo .env
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 
-URL_BINANCE = "https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search"
+URL_BINANCE = os.getenv('URL_BINANCE')
 
-URL_BCV = "https://www.bcv.org.ve/"
+URL_BCV = os.getenv('URL_BCV')
 
 BASE_DIR = Path(__file__).resolve().parent
 

@@ -1,9 +1,15 @@
-from flask import Flask, redirect, render_template, flash
+import os
+from flask import Flask, render_template, flash
 from core.get_price import valor_obtenido
 import asyncio
+from dotenv import load_dotenv
+
+# Cargar el archivo .env
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'tRUFGRl1s8G1GXy*Ul#lBhrM'
+
+app.secret_key = os.getenv('SECRET_KEY')
 
 @app.get('/')
 def home():
@@ -26,7 +32,6 @@ def home():
     return render_template('index.html', usdt_valor = usdt_valor, bcv_valor = bcv_valor)
 
 
-
 @app.route("/price/ves-prices")
 def price_usdt_usd_ves():
 
@@ -46,3 +51,6 @@ def price_usdt_usd_ves():
         flash(err_usdt, "warning")
 
     return {"usdt_valor":usdt_valor, "bcv_valor":bcv_valor}
+
+# Para que vercel ejecute
+app = app
