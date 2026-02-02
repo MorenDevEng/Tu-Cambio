@@ -3,7 +3,6 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 import json 
-import time
 import asyncio
 import aiohttp
 import ssl
@@ -19,11 +18,18 @@ URL_BINANCE = os.getenv('URL_BINANCE')
 
 URL_BCV = os.getenv('URL_BCV')
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_CERT = Path(__file__).resolve().parent
 
-CERT_PATH = str(BASE_DIR/'bcv.org.ve.crt')
+if os.environ.get('VERCEL'):
+    # En la nube: usamos la carpeta temporal permitida
+    BASE_DIR = Path("/tmp")
+else:
+    # En tu PC: usamos la carpeta donde esté el script
+    BASE_DIR = Path(__file__).resolve().parent
 
-ubicacion_json = BASE_DIR / "dolar_ves.json"
+CERT_PATH = str(BASE_CERT / 'bcv.org.ve.crt')
+
+ubicacion_json = str(BASE_DIR / "dolar_ves.json")
 
 headers = {
     "Content-Type": "application/json",
