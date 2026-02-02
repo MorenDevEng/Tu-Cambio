@@ -54,4 +54,4 @@ def price_usdt_usd_ves():
 
 # Para que Vercel lo ejecute
 if __name__=='__main__':
-    app.run()
+    app.run(debug=True)
