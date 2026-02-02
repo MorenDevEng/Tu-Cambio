@@ -1,12 +1,11 @@
 {
   "version": 2,
+  "installCommand": "bash build.sh",
   "builds": [
     {
-      "src": "build.sh"
-    },
-    {
       "src": "app.py",
-      "use": "@vercel/python"
+      "use": "@vercel/python",
+      "config": { "runtime": "python3.12" }
     }
   ],
   "rewrites": [
