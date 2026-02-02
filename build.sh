@@ -1,23 +1,16 @@
 #!/bin/bash
+echo "🚀 [BUILD] Iniciando instalación..."
 
-echo "🚀 [BUILD] Iniciando proceso de instalación detallado..."
-
-# Mostrar la versión de Python que está usando Vercel
-python3 --version
-
-# Actualizar pip y mostrar progreso
-echo "📦 Actualizando pip..."
-python3 -m pip install --upgrade pip
-
-# Instalar dependencias con VERBOSE (-v) para ver la descarga
-echo "📥 Instalando dependencias desde requirements.txt..."
+# Instalamos las dependencias
 if [ -f requirements.txt ]; then
-    pip install -v -r requirements.txt
-    echo "✅ [SUCCESS] Todas las dependencias se instalaron."
+    # Usamos --user o simplemente confiamos en el entorno virtual de Vercel
+    pip install -r requirements.txt
+    echo "✅ Dependencias instaladas."
 else
-    echo "❌ [ERROR] No se encontró el archivo requirements.txt en la raíz."
+    echo "❌ No se encontró requirements.txt"
     exit 1
 fi
 
-echo "📋 Listado final de paquetes instalados:"
-pip freeze
+# Esto es lo que querías: ver si realmente están ahí
+echo "📋 Verificando instalación:"
+pip list | grep -E "Flask|asgiref|python-dotenv"
