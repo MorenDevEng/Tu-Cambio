@@ -22,29 +22,9 @@ CURRENT_DIR = Path(__file__).resolve().parent
 
 CERT_PATH = str(CURRENT_DIR / 'bcv.org.ve.crt')
 
-# 2. Bloque de Diagnóstico con sintaxis corregida
-print(f"🔍 [DEBUG] Buscando cert en: {CERT_PATH}", flush=True)
-
-if os.path.exists(CERT_PATH):
-    print(f"✅ [OK] Certificado encontrado. Tamaño: {os.path.getsize(CERT_PATH)} bytes", flush=True)
-else:
-    print(f"❌ [ERROR] Certificado NO encontrado.", flush=True)
-    try:
-        print(f"📂 [FILES] Contenido de {CURRENT_DIR}: {os.listdir(CURRENT_DIR)}", flush=True)
-    except Exception as e:
-        print(f"⚠️ No se pudo listar carpeta: {e}", flush=True)
-
-# 3. Creación del contexto SSL
-try:
-    ssl_contenido = ssl.create_default_context(cafile=CERT_PATH)
-    print("✅ [SSL] Contexto creado exitosamente", flush=True)
-except Exception as e:
-    print(f"❌ [SSL] Falló al crear el contexto: {e}", flush=True)
-    ssl_contenido = None # Evita que la app colapse totalmente
-
 if os.environ.get('VERCEL'):
     # En la nube: usamos la carpeta temporal permitida
-    BASE_DIR = Path("/tmp")
+    BASE_DIR = Path("/tmp/")
 else:
     # En tu PC: usamos la carpeta donde esté el script
     BASE_DIR = Path(__file__).resolve().parent
@@ -56,7 +36,7 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
 }
 
-# ssl_contenido = ssl.create_default_context(cafile=CERT_PATH)
+ssl_contenido = ssl.create_default_context(cafile=CERT_PATH)
 
 async def obtener_valor_usdt():
     """Busca el dato directamente en el endpoint de Binance"""
@@ -139,31 +119,30 @@ async def actualizacion_json():
         "price_bcv": price_bcv,
     }
 
-    # try:
-    #     # Crea el archivo por primera vez
+    try:
+        # Crea el archivo por primera vez
 
-    #     with open(ubicacion_json, 'x', encoding='utf-8') as archivo:
-    #         json.dump(data, archivo, indent=4)    
+        with open(ubicacion_json, 'x', encoding='utf-8') as archivo:
+            json.dump(data, archivo, indent=4)    
 
-    # except FileExistsError:
-    #     # Modifica el contenido del archivo si ya existe
+    except FileExistsError:
+        # Modifica el contenido del archivo si ya existe
 
-    #     with open(ubicacion_json, 'w', encoding='utf-8') as archivo:
-    #         json.dump(data, archivo, indent=4)
+        with open(ubicacion_json, 'w', encoding='utf-8') as archivo:
+            json.dump(data, archivo, indent=4)
 
-    return data
 
 async def valor_obtenido():
     """Obtiene el valor del JSON"""
     
-    data = await actualizacion_json()
+    await actualizacion_json()
 
-    # try:
+    try:
 
-    #     with open(ubicacion_json, 'r', encoding='utf-8') as archivo:
-    #         data = json.load(archivo)
+        with open(ubicacion_json, 'r', encoding='utf-8') as archivo:
+            data = json.load(archivo)
 
-    # except Exception as e:
-    #     pass
+    except Exception as e:
+        pass
     
     return data
