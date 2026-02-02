@@ -1,23 +1,18 @@
 #!/bin/bash
-echo "🔥 [FORCE INSTALL] Eliminando cache y forzando descarga..."
+echo "🚀 INICIANDO INSTALACIÓN FORZADA"
 
-# 1. Instalación agresiva de dependencias
-python3.12 -m pip install -r requirements.txt --break-system-packages
+# Forzar instalación de dependencias
+python3.12 -m pip install --no-cache-dir --force-reinstall -r requirements.txt
 
-echo "📋 Verificando dependencias instaladas:"
+echo "📊 VERIFICANDO PAQUETES EXTERNOS:"
 python3.12 -m pip show python-dotenv
 python3.12 -m pip show aiohttp
 
-echo "🛡️  VERIFICANDO SSL EN EL SISTEMA:"
-# Esta es la única forma real de saber si SSL funciona en Python
-python3.12 -c "import ssl; print('✅ Módulo SSL cargado correctamente'); print('✅ Versión OpenSSL:', ssl.OPENSSL_VERSION)"
+echo "🛡️ VERIFICANDO SSL NATIVO:"
+# Esto comprueba que el módulo interno de Python funciona
+python3.12 -c "import ssl; print('✅ Módulo SSL cargado'); print('✅ Versión OpenSSL:', ssl.OPENSSL_VERSION)"
 
-echo "📁 Verificando existencia de certificado en core/:"
-if [ -f "core/bcvcert.crt" ]; then
-    echo "✅ Archivo bcvcert.crt encontrado."
-else
-    echo "❌ ERROR: bcvcert.crt no existe en la carpeta core."
-    ls -R core/
-fi
+echo "📁 BUSCANDO CERTIFICADO:"
+ls -l core/bcvcert.crt || echo "❌ El certificado no existe en la carpeta core"
 
-echo "✅ Proceso de build finalizado."
+echo "✅ BUILD FINALIZADO"
