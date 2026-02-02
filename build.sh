@@ -2,14 +2,9 @@
 echo "🚀 [BUILD] Iniciando instalación..."
 
 # Instalamos las dependencias
-if [ -f requirements.txt ]; then
-    # Usamos --user o simplemente confiamos en el entorno virtual de Vercel
-    python3.12 -m pip install -r requirements.txt --break-system-packages
-    echo "✅ Dependencias instaladas."
-else
-    echo "❌ No se encontró requirements.txt"
-    exit 1
-fi
+# Forzamos la reinstalación ignorando la caché de Vercel
+python3 -m pip install --upgrade pip
+pip install --no-cache-dir --force-reinstall -r requirements.txt
 
 # Esto es lo que querías: ver si realmente están ahí
 echo "📋 Verificando instalación:"
