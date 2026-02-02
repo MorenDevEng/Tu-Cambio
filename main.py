@@ -53,5 +53,4 @@ def price_usdt_usd_ves():
     return {"usdt_valor":usdt_valor, "bcv_valor":bcv_valor}
 
 # Para que Vercel lo ejecute
-if __name__=='__main__':
-    app.run(debug=True)
+app.run()
