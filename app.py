@@ -2,7 +2,6 @@ import os
 from flask import Flask, render_template, flash
 from core.get_price import valor_obtenido
 import asyncio
-from dotenv import load_dotenv
 
 app = Flask(__name__)
 
@@ -12,7 +11,7 @@ app.secret_key = os.getenv('SECRET_KEY')
 def home():
 
     valor = asyncio.run(valor_obtenido())
-    
+
     usdt_valor, err_usdt = valor['price_usdt']
     bcv_valor, err_bcv = valor['price_bcv']
 
@@ -39,6 +38,8 @@ def price_usdt_usd_ves():
 
     return {"usdt_valor":usdt_valor, "bcv_valor":bcv_valor}
 
+app = app
+
 # Para que Vercel lo ejecute
 if __name__=='__main__':
-    app.run()
+    app.run(debug=True)
