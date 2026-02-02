@@ -48,8 +48,6 @@ Tu-Cambio/
 │
 ├── env_calculadora_VES       # Entorno virtual
 │
-├── api/main.py               # App de Flask
-│
 ├── node_modules/             # Dependencias frontend
 │
 ├── static/
@@ -71,6 +69,7 @@ Tu-Cambio/
 │   └── index.html            # HTML principal
 │
 ├── .env                      # Variables de entorno
+├── app.py                    # App de Flask
 ├── .gitignore
 ├── build_file.sh             # Build para Vercel
 ├── package.json              # Tailwind / frontend
@@ -102,7 +101,7 @@ pip install -r requirements.txt
 
 4️⃣ Ejecutar la aplicación
 ```bash
-python main.py
+python app.py
 ```
 
 Luego abre tu navegador en:

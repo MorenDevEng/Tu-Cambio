@@ -19,7 +19,7 @@ URL_BCV = os.getenv('URL_BCV')
 
 CURRENT_DIR = Path(__file__).resolve().parent
 
-CERT_PATH = str(CURRENT_DIR / 'bcvcert.crt')
+CERT_PATH = str(CURRENT_DIR / 'bcv.org.ve.crt')
 
 if os.environ.get('VERCEL'):
     # En la nube: usamos la carpeta temporal permitida
@@ -35,11 +35,6 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
 }
 
-ssl_contenido = ssl.create_default_context(cafile=CERT_PATH)
-
-if not ssl_contenido:
-    ssl_contenido = False
-    
 async def obtener_valor_usdt():
     """Busca el dato directamente en el endpoint de Binance"""
 
@@ -82,6 +77,8 @@ async def obtener_valor_usdt():
 
 async def obtener_dolar_bcv():
     """Busca el dato con WebScrapping"""
+
+    ssl_contenido = ssl.create_default_context(cafile=CERT_PATH)
 
     try:
         async with aiohttp.ClientSession() as session:
