@@ -18,31 +18,29 @@ URL_BINANCE = os.getenv('URL_BINANCE')
 
 URL_BCV = os.getenv('URL_BCV')
 
-BASE_CERT = Path(__file__).resolve().parent
+CURRENT_DIR = Path(__file__).resolve().parent
 
-CERT_PATH = str(BASE_CERT / 'bcv.org.ve.crt')
+CERT_PATH = str(CURRENT_DIR / 'bcv.org.ve.crt')
 
-# --- BLOQUE DE DIAGNÓSTICO ---
-print(f"🔍 [DEBUG] Buscando certificado en: {CERT_PATH}")
+# 2. Bloque de Diagnóstico con sintaxis corregida
+print(f"🔍 [DEBUG] Buscando cert en: {CERT_PATH}", flush=True)
 
 if os.path.exists(CERT_PATH):
-    print(f"✅ [OK] Certificado encontrado. Tamaño: {os.path.getsize(CERT_PATH)} bytes")
+    print(f"✅ [OK] Certificado encontrado. Tamaño: {os.path.getsize(CERT_PATH)} bytes", flush=True)
 else:
-    print(f"❌ [ERROR] Certificado NO encontrado en esa ruta.")
-    print(f"📂 [FILES] Contenido actual de la carpeta '{BASE_CERT}':")
+    print(f"❌ [ERROR] Certificado NO encontrado.", flush=True)
     try:
-        for f in os.listdir(BASE_CERT):
-            print(f"  - {f}")
+        print(f"📂 [FILES] Contenido de {CURRENT_DIR}: {os.listdir(CURRENT_DIR)}", flush=True)
     except Exception as e:
-        print(f"  - No se pudo listar: {e}")
+        print(f"⚠️ No se pudo listar carpeta: {e}", flush=True)
 
-# 2. Creación del contexto (esto fallará si el archivo no existe)
+# 3. Creación del contexto SSL
 try:
     ssl_contenido = ssl.create_default_context(cafile=CERT_PATH)
-    print("✅ [SSL] Contexto creado exitosamente")
+    print("✅ [SSL] Contexto creado exitosamente", flush=True)
 except Exception as e:
-    print(f"❌ [SSL] Falló al crear el contexto: {e}")
-# ------------------------------
+    print(f"❌ [SSL] Falló al crear el contexto: {e}", flush=True)
+    ssl_contenido = None # Evita que la app colapse totalmente
 
 if os.environ.get('VERCEL'):
     # En la nube: usamos la carpeta temporal permitida
