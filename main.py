@@ -40,8 +40,6 @@ async def price_usdt_usd_ves():
 
     return {"usdt_valor": usdt_valor, "bcv_valor": bcv_valor}
 
-# Borramos la función run_async ya que no es necesaria y causa el error 500
-
 app = app
 
 if __name__ == "__main__":
