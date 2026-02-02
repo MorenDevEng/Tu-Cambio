@@ -179,8 +179,8 @@ async function actualizarTasas() {
     
 }
 
-// Cada 60 segundos
-setInterval(actualizarTasas, 10000);
+// Cada 1 min 
+setInterval(actualizarTasas, 60000);
 
 // Inicializar
 calculateTo();
