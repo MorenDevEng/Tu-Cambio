@@ -51,7 +51,7 @@ def run_async(consulta):
 
     return loop.run_until_complete(consulta)
 
-app = app.run(debug=True)
+app = app
 
 # Solo para ejecución local
 if __name__ == "__main__":
