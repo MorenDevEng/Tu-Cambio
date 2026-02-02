@@ -8,21 +8,15 @@ Este proyecto es una aplicación web desarrollada con Flask (Python) que permite
 
 La aplicación actualiza los precios de forma dinámica, sin recargar la página, usando JavaScript + Fetch API.
 
-* Características principales
+**Características principales**
 
-Conversión en tiempo real entre VES, USD y USDT
-
-Consulta del dólar oficial BCV
-
-Consulta del precio USDT/VES desde Binance P2P
-
-Actualización automática de tasas cada cierto intervalo
-
-Interfaz web simple y clara
-
-Backend asíncrono para mejorar el rendimiento
-
-Manejo de errores para evitar que la app se caiga si una API no responde
+* Conversión en tiempo real entre VES, USD y USDT
+* Consulta del dólar oficial BCV
+* Consulta del precio USDT/VES desde Binance P2P
+* Actualización automática de tasas cada cierto intervalo
+* Interfaz web simple y clara
+* Backend asíncrono para mejorar el rendimiento
+* Manejo de errores para evitar que la app se caiga si una API no responde
 
 **Tecnologías utilizadas**
 
