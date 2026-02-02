@@ -19,10 +19,7 @@ URL_BINANCE = os.getenv('URL_BINANCE')
 
 URL_BCV = os.getenv('URL_BCV')
 
-if os.environ.get('VERCEL'):
-    BASE_DIR = Path("/tmp")
-else:
-    BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent
 
 ubicacion_json = BASE_DIR / "dolar_ves.json"
 
@@ -101,6 +98,7 @@ async def obtener_dolar_bcv():
     except (AttributeError, ValueError):
         return 0, "Error procesando datos del BCV"
 
+# Usar en entorno local
 async def actualizacion_json():
 
     price_usdt, price_bcv = await asyncio.gather(
@@ -113,30 +111,31 @@ async def actualizacion_json():
         "price_bcv": price_bcv,
     }
 
-    try:
-        # Crea el archivo por primera vez
+    # try:
+    #     # Crea el archivo por primera vez
 
-        with open(ubicacion_json, 'x', encoding='utf-8') as archivo:
-            json.dump(data, archivo, indent=4)    
+    #     with open(ubicacion_json, 'x', encoding='utf-8') as archivo:
+    #         json.dump(data, archivo, indent=4)    
 
-    except FileExistsError:
-        # Modifica el contenido del archivo si ya existe
+    # except FileExistsError:
+    #     # Modifica el contenido del archivo si ya existe
 
-        with open(ubicacion_json, 'w', encoding='utf-8') as archivo:
-            json.dump(data, archivo, indent=4)
+    #     with open(ubicacion_json, 'w', encoding='utf-8') as archivo:
+    #         json.dump(data, archivo, indent=4)
 
+    return data
 
 async def valor_obtenido():
     """Obtiene el valor del JSON"""
     
-    await actualizacion_json()
+    data = await actualizacion_json()
 
-    try:
+    # try:
 
-        with open(ubicacion_json, 'r', encoding='utf-8') as archivo:
-            data = json.load(archivo)
+    #     with open(ubicacion_json, 'r', encoding='utf-8') as archivo:
+    #         data = json.load(archivo)
 
-    except Exception as e:
-        pass
+    # except Exception as e:
+    #     pass
     
     return data
