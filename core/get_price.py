@@ -78,7 +78,8 @@ def crear_ssl():
         contexto = False # Forzamos modo sin verificación
     else:
         # Entorno local
-        contexto = os.path.join(os.path.dirname(__file__), 'bcv.org.ve.crt')
+        RUTA_CERT = os.path.join(os.path.dirname(__file__), 'bcv.org.ve.crt')
+        contexto = ssl.create_default_context(cafile=RUTA_CERT)
     
     return contexto
 
