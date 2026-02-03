@@ -4,28 +4,26 @@ from bs4 import BeautifulSoup
 import json 
 import asyncio
 import aiohttp
-import ssl
-import logging
+# Verifico si esta disponible el paquete ssl
+try:
+    import ssl
+    SSL_DISPONIBLE = True
+except ImportError:
+    SSL_DISPONIBLE = False
 from dotenv import load_dotenv
 
 # Cargar el archivo .env
 load_dotenv()
 
-logger = logging.getLogger(__name__)
-
-URL_BINANCE = os.getenv('URL_BINANCE')
-
-URL_BCV = os.getenv('URL_BCV')
-
 CURRENT_DIR = Path(__file__).resolve().parent
 
-CERT_PATH = str(CURRENT_DIR / 'bcv.org.ve.crt')
+CERT_PATH = os.path.join(CURRENT_DIR, 'bcv.org.ve.crt')
 
 if os.environ.get('VERCEL'):
-    # En la nube: usamos la carpeta temporal permitida
+    # En la web Vercel para poder escribir
     BASE_DIR = Path("/tmp/")
 else:
-    # En tu PC: usamos la carpeta donde esté el script
+    # Entorno local
     BASE_DIR = Path(__file__).resolve().parent
 
 ubicacion_json = str(BASE_DIR / "dolar_ves.json")
@@ -35,8 +33,11 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
 }
 
+# Funcion para consultar endpoint de Binance
 async def obtener_valor_usdt():
     """Busca el dato directamente en el endpoint de Binance"""
+
+    URL_BINANCE = os.getenv('URL_BINANCE')
 
     payload = {
         "fiat":"VES",
@@ -74,14 +75,34 @@ async def obtener_valor_usdt():
     except (KeyError, ValueError):
         return 0, "Error procesando datos de Binance"
 
+def crear_ssl():
+
+    ruta_cert = os.path.join(os.path.dirname(__file__), 'bcv.org.ve.crt')
+    
+    contexto = None
+
+    # 2. Decidimos qué motor de SSL usar
+    if SSL_DISPONIBLE and os.path.exists(ruta_cert):
+        try:
+            # Plan A: Usar el certificado que exportaste
+            contexto = ssl.create_default_context(cafile=ruta_cert)
+            
+        except Exception as e:
+            
+            contexto = False # Forzamos modo sin verificación
+    else:
+        # Plan B: Si no hay paquete SSL o no está el archivo
+        contexto = False
+
+    return contexto
+
+# Funciona para hacer la consulta a la web del BCV
 async def obtener_dolar_bcv():
     """Busca el dato con WebScrapping"""
 
-    # En modo local puedes utilizar esta opcion y comentar ssl en False
-    # ssl_contenido = ssl.create_default_context(cafile=CERT_PATH)
+    URL_BCV = os.getenv('URL_BCV')
 
-    # En vercel utiliza esta opcion para evitar problema con el archivo
-    ssl_contenido = False
+    ssl_contenido = crear_ssl()
     
     try:
         async with aiohttp.ClientSession() as session:
@@ -99,8 +120,8 @@ async def obtener_dolar_bcv():
         
         return round(dolar_bcv, 2), ''
 
-    except ssl.SSLError:
-        return 0, "Error SSL con BCV"
+    except ssl.SSLError as e:
+        return 0, f"Error SSL con BCV {e}"
     except asyncio.TimeoutError:
         return 0, "Timeout consultando BCV"
     except aiohttp.ClientError:
@@ -133,7 +154,7 @@ async def actualizacion_json():
         with open(ubicacion_json, 'w', encoding='utf-8') as archivo:
             json.dump(data, archivo, indent=4)
 
-
+# Obtiene el valor y lo retorna
 async def valor_obtenido():
     """Obtiene el valor del JSON"""
     
