@@ -70,8 +70,17 @@ function calculateTo() {
         return;
     };
 
-    toAmount.value = result.toFixed(2);
-    totalReceive.textContent = result.toFixed(2);
+    toAmount.value = result.toLocaleString('es-ES', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+        useGrouping: true
+    });
+
+    totalReceive.textContent = result.toLocaleString('es-ES', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+        useGrouping: true
+    });
 
 };
 
