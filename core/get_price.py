@@ -76,7 +76,7 @@ async def obtener_valor_usdt():
         return 0, "Error procesando datos de Binance"
 
 def crear_ssl():
-
+    """Funciona para crear el contexto del certificado"""
     ruta_cert = os.path.join(os.path.dirname(__file__), 'bcv.org.ve.crt')
     
     contexto = None

@@ -71,7 +71,6 @@ Tu-Cambio/
 ├── .env                      # Variables de entorno
 ├── app.py                    # App de Flask
 ├── .gitignore
-├── build_file.sh             # Build para Vercel
 ├── package.json              # Tailwind / frontend
 ├── package-lock.json
 ├── requirements.txt          # Python deps
@@ -121,8 +120,6 @@ http://127.0.0.1:5000
 El proyecto está configurado para ejecutarse en Vercel como una función serverless en Python, utilizando:
 
 * vercel.json
-* build_file.sh
-
 
 👨‍💻 Autor
 
