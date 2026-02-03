@@ -4,12 +4,7 @@ from bs4 import BeautifulSoup
 import json 
 import asyncio
 import aiohttp
-# Verifico si esta disponible el paquete ssl
-try:
-    import ssl
-    SSL_DISPONIBLE = True
-except ImportError:
-    SSL_DISPONIBLE = False
+import ssl
 from dotenv import load_dotenv
 
 # Cargar el archivo .env
@@ -77,23 +72,14 @@ async def obtener_valor_usdt():
 
 def crear_ssl():
     """Funciona para crear el contexto del certificado"""
-    ruta_cert = os.path.join(os.path.dirname(__file__), 'bcv.org.ve.crt')
-    
-    contexto = None
 
-    # 2. Decidimos qué motor de SSL usar
-    if SSL_DISPONIBLE and os.path.exists(ruta_cert):
-        try:
-            # Plan A: Usar el certificado que exportaste
-            contexto = ssl.create_default_context(cafile=ruta_cert)
-            
-        except Exception as e:
-            
-            contexto = False # Forzamos modo sin verificación
+    if os.environ.get('VERCEL'):
+        # En la web Vercel para poder consultar a BCV
+        contexto = False # Forzamos modo sin verificación
     else:
-        # Plan B: Si no hay paquete SSL o no está el archivo
-        contexto = False
-
+        # Entorno local
+        contexto = os.path.join(os.path.dirname(__file__), 'bcv.org.ve.crt')
+    
     return contexto
 
 # Funciona para hacer la consulta a la web del BCV
