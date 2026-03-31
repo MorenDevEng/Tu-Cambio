@@ -9,58 +9,60 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ url_for('static', filename='js/alertas_web.js') }}"></script>
 </head>
-<body class="bg-slate-900 text-white min-h-screen flex flex-col items-center justify-center p-4 sm:p-4"
+<body class="bg-slate-900 text-white min-h-screen flex flex-col items-center justify-center pt-8"
   data-bcv="{{ bcv_valor }}"
   data-usdt="{{ usdt_valor }}"
   data-euro="{{ euro_valor }}"
   >
-    <main class="max-w-sm w-50% space-y-4">
+    
+    <main class="w-full max-w-md flex flex-col items-center space-y-4 px-4">
+        
         <!-- Header -->
-        <header class="text-center">
+        <header class="text-center w-full">
             <h1 class="text-2xl font-bold text-blue-400">Swap VES ⇄ USD</h1>
-            <p class="text-sm text-gray-400 mt-2">Tasa basada en BCV + comparación con USDT (Binance)</p>
+            <p class="text-sm text-gray-400 mt-2">Tasa BCV vs USDT Binance</p>
         </header>
 
         <!-- Tarjeta de Tasas -->
-        <section class="bg-gray-800 rounded-2xl shadow-xl p-6">
-            <div class="grid grid-cols-3 gap-2">
-                <div class="bg-gray-700 rounded-xl p-3 text-center">
-                    <div class="text-sm text-gray-200">VES/USD (BCV)</div>
-                    <div class="text-xl font-bold text-white"><span class="precio_bcv">{{ bcv_valor }}</span> Bs</div>
+        <section class="w-full">
+            <div class="bg-gray-800 rounded-2xl shadow-xl p-4 md:p-6">
+                <div class="flex justify-center gap-2 md:gap-4">
+                    <div class="bg-gray-700 rounded-xl p-3 text-center md:flex-1">
+                        <div class="text-sm text-gray-200">USD</div>
+                        <div class="text-xl font-bold text-white"><span class="precio_bcv">{{ bcv_valor }}</span> Bs</div>
+                    </div>
+                    <div class="bg-gray-700 rounded-xl p-3 text-center md:flex-1">
+                        <div class="text-sm text-gray-200">USDT</div>
+                        <div class="text-xl font-bold text-white"><span class="precio_usdt">{{ usdt_valor }}</span> Bs</div>
+                    </div>
+                    <div class="bg-gray-700 rounded-xl p-3 text-center md:flex-1">
+                        <div class="text-sm text-gray-200">EUR</div>
+                        <div class="text-xl font-bold text-white"><span class="precio_euro">{{ euro_valor }}</span> Bs</div>
+                    </div>
                 </div>
-                <div class="bg-gray-700 rounded-xl p-3 text-center">
-                    <div class="text-sm text-gray-200">VES/USDT (Binance)</div>
-                    <div class="text-xl font-bold text-white"><span class="precio_usdt">{{ usdt_valor }}</span> Bs</div>
+                <div class="mt-4 text-center">
+                    <span class="text-xs text-green-400">
+                        Dif USDT - USD: <span class="diferencia">{{ "%.2f"|format(usdt_valor - bcv_valor) }}</span> Bs
+                    </span>
                 </div>
-                <div class="bg-gray-700 rounded-xl p-3 text-center">
-                    <div class="text-sm text-gray-200">VES/EUR (BCV)</div>
-                    <div class="text-xl font-bold text-white"><span class="precio_euro">{{ euro_valor }}</span> Bs</div>
-                </div>
-            </div>
-            <div class="mt-4 text-center">
-                <span class="text-xs text-green-400">
-                    Dif: <span class="diferencia">{{ "%.2f"|format(usdt_valor - bcv_valor) }}</span> Bs
-                </span>
             </div>
         </section>
 
         <!-- Formulario SWAP -->
-        <form id="swapForm" class="bg-gray-800 rounded-2xl shadow-xl p-6 space-y-4">
+        <form id="swapForm" class="bg-gray-800 rounded-2xl shadow-xl p-6 space-y-4 w-full">
             <!-- From -->
             <div>
                 <label for="fromAmount" class="block text-sm font-medium text-gray-400 mb-2">From</label>
                 <div class="flex items-center space-x-2">
-
-                    <!-- LOGO DE BANDERA DE VENEZUELA -->
                     <div class="w-12 h-12">
-                        <img id="icon-bin-sup" src="{{ url_for('static', filename='img/binance.png') }}" class="hidden object-cover rounded-full scale-125" alt="currency-binance">
-                        <img id="icon-usd-sup" src="{{ url_for('static', filename='img/usa.png') }}" class="hidden object-cover rounded-full w-full h-full" alt="currency-bcv">
-                        <img id="icon-eur-sup" src="{{ url_for('static', filename='img/euro.png') }}" class="hidden object-cover rounded-full w-full h-full" alt="currency-euro">
-                        <img id="icon-ves-sup" src="{{ url_for('static', filename='img/VE_C.png') }}" class="rounded-full object-cover w-full h-full" alt="venezuela-bandera">
+                        <img id="icon-bin-sup" src="{{ url_for('static', filename='img/binance.png') }}" class="hidden object-cover rounded-full scale-125" alt="Binance">
+                        <img id="icon-usd-sup" src="{{ url_for('static', filename='img/usa.png') }}" class="hidden object-cover rounded-full w-full h-full" alt="USD">
+                        <img id="icon-eur-sup" src="{{ url_for('static', filename='img/euro.png') }}" class="hidden object-cover rounded-full w-full h-full" alt="EUR">
+                        <img id="icon-ves-sup" src="{{ url_for('static', filename='img/VE_C.png') }}" class="rounded-full object-cover w-full h-full" alt="VES">
                     </div>
                     
                     <input type="number" id="fromAmount" name="fromAmount" step="0.01" min="0" class="w-full p-4 text-lg bg-gray-900 border border-gray-700 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="0.00" required>
-                    <select id="fromCurrency" name="fromCurrency" aria-label="Seleccionar tipo de moneda" class="bg-gray-900 border border-gray-700 rounded-2xl p-2 text-xl">
+                    <select id="fromCurrency" name="fromCurrency" aria-label="Moneda origen" class="bg-gray-900 border border-gray-700 rounded-2xl p-2 text-xl">
                         <option value="VES">VES</option>
                         <option class="hidden" value="USD">USD</option>
                         <option class="hidden" value="USDT">USDT</option>
@@ -69,11 +71,10 @@
                 </div>
             </div>
 
-            
             <!-- Botón de Intercambiar -->
             <div class="flex justify-center">
-                <button type="button" id="swapButton" aria-label="Invertir dirección de conversión" class="bg-gray-700 hover:bg-gray-600 rounded-full p-3 transition-all duration-200">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <button type="button" id="swapButton" aria-label="Invertir conversión" class="bg-gray-700 hover:bg-gray-600 rounded-full p-3 transition-all duration-200">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
                     </svg>
                 </button>
@@ -82,37 +83,17 @@
             <!-- To -->
             <div>
                 <label for="toAmount" class="block text-sm font-medium text-gray-400 mb-2">To</label>
-
                 <div class="flex items-center space-x-3 bg-gray-900 border border-gray-700 rounded-2xl p-3">
-                    
-                    <!-- Icono -->
                     <div class="w-12 h-12">
-                        <img id="icon-bin-inf" src="{{ url_for('static', filename='img/binance.png') }}" class="hidden object-cover rounded-full scale-125" alt="currency-binance">
-                        <img id="icon-usd-inf" src="{{ url_for('static', filename='img/usa.png') }}" class="object-cover rounded-full w-full h-full" alt="currency-bcv">
-                        <img id="icon-eur-inf" src="{{ url_for('static', filename='img/euro.png') }}" class="hidden object-cover rounded-full w-full h-full" alt="currency-euro">
-                        <img id="icon-ves-inf" src="{{ url_for('static', filename='img/VE_C.png') }}" class="hidden object-cover rounded-full w-full h-full" alt="venezuela-bandera">
+                        <img id="icon-bin-inf" src="{{ url_for('static', filename='img/binance.png') }}" class="hidden object-cover rounded-full scale-125" alt="Binance">
+                        <img id="icon-usd-inf" src="{{ url_for('static', filename='img/usa.png') }}" class="object-cover rounded-full w-full h-full" alt="USD">
+                        <img id="icon-eur-inf" src="{{ url_for('static', filename='img/euro.png') }}" class="hidden object-cover rounded-full w-full h-full" alt="EUR">
+                        <img id="icon-ves-inf" src="{{ url_for('static', filename='img/VE_C.png') }}" class="hidden object-cover rounded-full w-full h-full" alt="VES">
                     </div>  
 
-                    <!-- Amount -->
-                    <input
-                        type="text"
-                        id="toAmount"
-                        name="toAmount"
-                        step="0.01"
-                        min="0"
-                        class="w-full bg-transparent text-lg outline-none"
-                        placeholder="0.00"
-                        readonly
-                        inputmode="decimal"
-                    >
+                    <input type="text" id="toAmount" name="toAmount" step="0.01" min="0" class="w-full bg-transparent text-lg outline-none" placeholder="0.00" readonly inputmode="decimal">
 
-                    <!-- Currency -->
-                    <select
-                        id="toCurrency"
-                        name="toCurrency"
-                        class="bg-gray-800 border border-gray-700 rounded-xl px-3 py-1 text-xl"
-                        aria-label="Seleccionar tipo de moneda"
-                    >
+                    <select id="toCurrency" name="toCurrency" class="bg-gray-800 border border-gray-700 rounded-xl px-3 py-1 text-xl" aria-label="Moneda destino">
                         <option value="USD" selected>USD</option>
                         <option value="USDT">USDT</option>
                         <option value="EUR">EUR</option>
@@ -123,28 +104,19 @@
                 <!-- Fuente -->
                 <div class="flex flex-col gap-2 mt-2 text-xs text-gray-400">
                     <div class="flex items-center gap-2">
-                        <img src="{{ url_for('static', filename='img/binance.png') }}" 
-                            alt="binance" 
-                            class="w-6 h-6 object-contain">
+                        <img src="{{ url_for('static', filename='img/binance.png') }}" alt="binance" class="w-6 h-6 object-contain">
                         <span>Binance P2P</span>
                     </div>
-
                     <div class="flex items-center gap-2">
-                        <img src="{{ url_for('static', filename='img/usa.png') }}" 
-                            alt="bcv-usd" 
-                            class="w-6 h-6 object-contain rounded-full">
+                        <img src="{{ url_for('static', filename='img/usa.png') }}" alt="bcv-usd" class="w-6 h-6 object-contain rounded-full">
                         <span>BCV (USD)</span>
                     </div>
-
                     <div class="flex items-center gap-2">
-                        <img src="{{ url_for('static', filename='img/euro.png') }}" 
-                            alt="bcv-eur" 
-                            class="w-6 h-6 object-contain rounded-full">
+                        <img src="{{ url_for('static', filename='img/euro.png') }}" alt="bcv-eur" class="w-6 h-6 object-contain rounded-full">
                         <span>BCV (EUR)</span>
                     </div>
                 </div>
             </div>
-
 
             <!-- Tasas Abajo -->
             <div class="text-center text-sm text-gray-400">
@@ -153,23 +125,23 @@
                 <p>1 EUR = <span class="precio_euro">{{ euro_valor }}</span> VES</p>
             </div>
 
-            <!-- Detalles de Transacción (Acordeón Simple) -->
+            <!-- Detalles -->
             <details class="text-sm">
-                <summary class="cursor-pointer text-gray-400 hover:text-white">Detalles de la transacción</summary>
+                <summary class="cursor-pointer text-gray-400 hover:text-white">Detalles</summary>
                 <div class="mt-2 space-y-1">
-                    <p>Tasa de cambio actual: <span id="tasa-cambio"></span> Bs/USD</p>
-                    <p>Total a recibir: <span id="totalReceive">0.00</span></p>
+                    <p>Tasa: <span id="tasa-cambio"></span> Bs</p>
+                    <p>Total: <span id="totalReceive">0.00</span></p>
                 </div>
             </details>
 
             <!-- Botón Limpiar -->
-            <button type="button" aria-label="Boton Limpiador" id="Boton-Limpiador" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-2xl transition-all duration-200">
+            <button type="button" aria-label="Limpiar" id="Boton-Limpiador" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-2xl transition-all duration-200">
                 Limpiar
             </button>
         </form>
     </main>
 
-    <!-- Mensaje de error al conectar con BCV o Binance -->
+    <!-- Mensaje de error -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
@@ -185,7 +157,6 @@
         {% endif %}
     {% endwith %}
 
-    <!-- JavaScript - Funciones -->
     <script src="{{ url_for('static', filename='js/actualizacion.js') }}"></script>
 </body>
 </html>
