@@ -11,11 +11,13 @@ const botonLimpiador = document.getElementById('Boton-Limpiador');
 const imgBinanceInferior = document.getElementById('icon-bin-inf');
 const imgUSDInferior = document.getElementById('icon-usd-inf');
 const imgVESInferior = document.getElementById('icon-ves-inf');
+const imgEURInferior = document.getElementById('icon-eur-inf');
 
 // Imagenes de la parte superior From
 const imgBinanceSuperior = document.getElementById('icon-bin-sup');
 const imgVESSuperior = document.getElementById('icon-ves-sup');
 const imgUSDSuperior = document.getElementById('icon-usd-sup');
+const imgEURSuperior = document.getElementById('icon-eur-sup');
 
 // obtengo la etiqueta body
 const body = document.body;
@@ -23,6 +25,7 @@ const body = document.body;
 // Obtenga del body las variables
 let bcvRate = parseFloat(body.dataset.bcv);
 let usdtRate = parseFloat(body.dataset.usdt);
+let euroRate = parseFloat(body.dataset.euro);
 
 // Evento para calcular en tiempo real
 toCurrency.addEventListener('change', () => {
@@ -37,32 +40,61 @@ function calculateTo() {
 
     let result = 0;
 
+    // Ocultar todos los iconos primero
+    imgBinanceInferior.classList.add('hidden');
+    imgUSDInferior.classList.add('hidden');
+    imgVESInferior.classList.add('hidden');
+    imgEURInferior.classList.add('hidden');
+    imgBinanceSuperior.classList.add('hidden');
+    imgVESSuperior.classList.add('hidden');
+    imgUSDSuperior.classList.add('hidden');
+    imgEURSuperior.classList.add('hidden');
+
+    // Mostrar icono según la moneda de origen
+    if (fromCurr === 'VES') {
+        imgVESSuperior.classList.remove('hidden');
+    } else if (fromCurr === 'USD') {
+        imgUSDSuperior.classList.remove('hidden');
+    } else if (fromCurr === 'USDT') {
+        imgBinanceSuperior.classList.remove('hidden');
+    } else if (fromCurr === 'EUR') {
+        imgEURSuperior.classList.remove('hidden');
+    }
+
+    // Mostrar icono según la moneda de destino
+    if (toCurr === 'USD') {
+        imgUSDInferior.classList.remove('hidden');
+    } else if (toCurr === 'USDT') {
+        imgBinanceInferior.classList.remove('hidden');
+    } else if (toCurr === 'EUR') {
+        imgEURInferior.classList.remove('hidden');
+    } else if (toCurr === 'VES') {
+        imgVESInferior.classList.remove('hidden');
+    }
+
+    // Calcular según las monedas
     if (fromCurr === 'VES' && toCurr === 'USD') {
-        imgBinanceInferior.classList.add('hidden')
-        imgUSDInferior.classList.remove('hidden')
         tasaDeCambio.textContent = bcvRate
         result = fromVal / bcvRate;
-
     } else if (fromCurr === 'VES' && toCurr === 'USDT') {
-        imgUSDInferior.classList.add('hidden')
-        imgBinanceInferior.classList.remove('hidden')
         tasaDeCambio.textContent = usdtRate
         result = fromVal / usdtRate;
-
+    } else if (fromCurr === 'VES' && toCurr === 'EUR') {
+        tasaDeCambio.textContent = euroRate
+        result = fromVal / euroRate;
     } else if (fromCurr === 'USD' && toCurr === 'VES') {
-
-        imgBinanceSuperior.classList.add('hidden')
-        imgUSDSuperior.classList.remove('hidden')
         tasaDeCambio.textContent = bcvRate
         result = bcvRate * fromVal;
-
     } else if (fromCurr === 'USDT' && toCurr === 'VES') {
-
-        imgBinanceSuperior.classList.remove('hidden')
-        imgUSDSuperior.classList.add('hidden')
         tasaDeCambio.textContent = usdtRate
         result = usdtRate * fromVal;
-    } 
+    } else if (fromCurr === 'EUR' && toCurr === 'VES') {
+        tasaDeCambio.textContent = euroRate
+        result = euroRate * fromVal;
+    } else {
+        // Por defecto mostrar tasa USD
+        tasaDeCambio.textContent = bcvRate;
+    }
 
     if (!fromAmount.value) {
         toAmount.value = '';
@@ -76,11 +108,7 @@ function calculateTo() {
         useGrouping: true
     });
 
-    totalReceive.textContent = result.toLocaleString('es-ES', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-        useGrouping: true
-    });
+    totalReceive.textContent = toAmount.value;
 
 };
 
@@ -91,56 +119,65 @@ swapButton.addEventListener('click', () => {
     opcionSeleccionarFrom = fromCurrency.options
     opcionSeleccionarTo = toCurrency.options
 
-    // SE MUESTRAN AHORA LAS OPCIONES OCULTAS DEL FROM
+    // Guardar los valores actuales
+    const valorTo = toCurrency.value;
+    const valorFrom = fromCurrency.value;
+
+    // Ocultar todos los iconos primero
+    imgBinanceInferior.classList.add('hidden');
+    imgUSDInferior.classList.add('hidden');
+    imgVESInferior.classList.add('hidden');
+    imgEURInferior.classList.add('hidden');
+    imgBinanceSuperior.classList.add('hidden');
+    imgVESSuperior.classList.add('hidden');
+    imgUSDSuperior.classList.add('hidden');
+    imgEURSuperior.classList.add('hidden');
+
+    // SE MUESTRAN LAS OPCIONES OCULTAS DEL FROM
     for (var i = 0; i < opcionSeleccionarFrom.length; i++) {
         if (opcionSeleccionarFrom[i].classList.contains('hidden')) {
             opcionSeleccionarFrom[i].classList.remove('hidden')
-
-            if (opcionSeleccionarFrom[i].value === 'USD' && !(opcionSeleccionarFrom[i].classList.contains('hidden'))) {
-                opcionSeleccionarFrom[i].selected = true
-                imgVESSuperior.classList.add('hidden')
-                imgUSDSuperior.classList.remove('hidden')
-
-            
-            } else if (opcionSeleccionarFrom[i].value === 'VES' && !(opcionSeleccionarFrom[i].classList.contains('hidden'))) {
-                opcionSeleccionarFrom[i].selected = true
-                imgVESSuperior.classList.remove('hidden')
-                imgBinanceSuperior.classList.add('hidden')
-                imgUSDSuperior.classList.add('hidden')
-            };
-
         } else {
             opcionSeleccionarFrom[i].classList.add('hidden')
         };
-
     };
 
-    // SE MUESTRAN AHORA LAS OPCIONES OCULTAS DEL TO
+    // SE MUESTRAN LAS OPCIONES OCULTAS DEL TO
     for (var i = 0; i < opcionSeleccionarTo.length; i++) {
         if (opcionSeleccionarTo[i].classList.contains('hidden')) {
             opcionSeleccionarTo[i].classList.remove('hidden')
-
-            if (opcionSeleccionarTo[i].value === 'VES' && !(opcionSeleccionarTo[i].classList.contains('hidden'))) {
-                opcionSeleccionarTo[i].selected = true
-                imgVESInferior.classList.remove('hidden')
-                imgUSDInferior.classList.add('hidden')
-                imgBinanceInferior.classList.add('hidden')
-
-            
-            } else if (opcionSeleccionarTo[i].value === 'USD' && !(opcionSeleccionarTo[i].classList.contains('hidden'))) {
-                opcionSeleccionarTo[i].selected = true
-                imgUSDInferior.classList.remove('hidden')
-                imgVESInferior.classList.add('hidden')
-                imgBinanceInferior.classList.add('hidden')
-
-            };
-
         } else {
             opcionSeleccionarTo[i].classList.add('hidden')
         };
-
     };
 
+    // Intercambiar valores directamente
+    fromCurrency.value = valorTo;
+    toCurrency.value = valorFrom;
+    
+    // Actualizar icono de arriba según el nuevo valor de From (antes estaba en To)
+    if (valorTo === 'USD') {
+        imgUSDSuperior.classList.remove('hidden')
+    } else if (valorTo === 'USDT') {
+        imgBinanceSuperior.classList.remove('hidden')
+    } else if (valorTo === 'EUR') {
+        imgEURSuperior.classList.remove('hidden')
+    } else if (valorTo === 'VES') {
+        imgVESSuperior.classList.remove('hidden')
+    }
+
+    // Actualizar icono de abajo según el nuevo valor de To (antes estaba en From)
+    if (valorFrom === 'USD') {
+        imgUSDInferior.classList.remove('hidden')
+    } else if (valorFrom === 'USDT') {
+        imgBinanceInferior.classList.remove('hidden')
+    } else if (valorFrom === 'EUR') {
+        imgEURInferior.classList.remove('hidden')
+    } else if (valorFrom === 'VES') {
+        imgVESInferior.classList.remove('hidden')
+    }
+
+    // Limpiar inputs
     limpiarInput()
     
 });
@@ -170,9 +207,11 @@ async function actualizarTasas() {
 
     usdtRate = (data.usdt_valor).toFixed(2);
     bcvRate = (data.bcv_valor).toFixed(2);
+    euroRate = (data.euro_valor).toFixed(2);
 
     actulizadorUSDT = document.querySelectorAll('.precio_usdt');
     actulizadorBCV = document.querySelectorAll('.precio_bcv');
+    actulizadorEUR = document.querySelectorAll('.precio_euro');
     
 
     actulizadorBCV.forEach(element => {
@@ -183,6 +222,10 @@ async function actualizarTasas() {
         element.textContent = usdtRate;
     });
 
+    actulizadorEUR.forEach(element => {
+        element.textContent = euroRate;
+    });
+
     valorDiferencia = document.querySelector('.diferencia');
     valorDiferencia.textContent = (usdtRate - bcvRate).toFixed(2);
     
@@ -191,5 +234,7 @@ async function actualizarTasas() {
 // Cada 1 min 
 setInterval(actualizarTasas, 60000);
 
-// Inicializar
+// Inicializar - mostrar iconos correctos al inicio
+imgVESSuperior.classList.remove('hidden');
+imgUSDInferior.classList.remove('hidden');
 calculateTo();

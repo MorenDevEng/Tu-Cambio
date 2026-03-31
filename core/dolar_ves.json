@@ -1,10 +1,14 @@
 {
     "price_usdt": [
-        532.01,
+        658.0,
         ""
     ],
-    "price_bcv": [
-        375.08,
+    "price_dolar_bcv": [
+        473.87,
+        ""
+    ],
+    "price_euro_bcv": [
+        542.64,
         ""
     ]
 }
