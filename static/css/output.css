@@ -436,6 +436,20 @@ select {
 	padding-right: 2rem
 }
 
+select {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+select option {
+	background: #1e293b;
+	color: #f8fafc;
+	padding: 10px;
+}
+select option:hover {
+	background: #334155;
+}
+
 .light select {
 	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='%23444655'%3E%3Cpath d='m7 10 5 5 5-5z'/%3E%3C/svg%3E")
 }
@@ -678,6 +692,10 @@ select {
 
 .bg-surface-container-low {
 	background-color: var(--color-surface-container-low)
+}
+
+.bg-surface-container-lowest {
+	background-color: var(--color-surface-container-lowest)
 }
 
 .bg-transparent {
@@ -979,6 +997,10 @@ select {
 
 .hover\:bg-surface-container-highest:hover {
 	background-color: var(--color-surface-container-highest)
+}
+
+.hover\:bg-surface-container-lowest:hover {
+	background-color: var(--color-surface-container-lowest)
 }
 
 .hover\:opacity-80:hover {

@@ -69,7 +69,7 @@
           <div class="bg-surface-container-low border border-white/5 rounded-xl p-8 transition-all duration-300 focus-within:bg-surface-container-high shadow-xl">
               <div class="flex justify-between items-center mb-6">
                   <span class="text-on-surface-variant font-label font-bold text-[10px] uppercase tracking-widest">TÚ ENVÍAS</span>
-                  <div class="flex items-center gap-2 bg-surface-container-highest/50 py-2 px-4 rounded-full shadow-sm hover:bg-surface-container-highest transition-colors">
+                  <div class="flex items-center gap-2 bg-surface-container-high py-2 px-4 rounded-full shadow-sm hover:bg-surface-container-highest transition-colors">
                       <div class="w-5 h-5 rounded-full overflow-hidden">
                           <img id="icon-ves-sup" src="{{ url_for('static', filename='img/VE_C.png') }}" class="object-cover w-full h-full" alt="VES">
                           <img id="icon-usd-sup" src="{{ url_for('static', filename='img/usa.png') }}" class="hidden object-cover w-full h-full" alt="USD">
@@ -85,7 +85,7 @@
                   </div>
               </div>
               <div class="flex items-baseline justify-between gap-4">
-                  <input type="number" id="fromAmount" name="fromAmount" step="0.01" min="0" class="bg-transparent border-none p-0 focus:ring-0 text-on-surface font-headline font-extrabold text-[2rem] w-full placeholder-on-surface/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="0.00" required>
+                  <input type="number" id="fromAmount" name="fromAmount" step="0.01" min="0" class="bg-transparent border-none p-0 focus:ring-0 outline-none text-on-surface font-headline font-extrabold text-[2rem] w-full placeholder-on-surface/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="0.00" required>
                   <span class="text-on-surface-variant font-headline font-bold text-xl" id="fromCurrencySymbol"></span>
               </div>
           </div>
@@ -101,7 +101,7 @@
           <div class="bg-surface-container-highest rounded-xl p-8 shadow-2xl border border-white/5">
               <div class="flex justify-between items-center mb-6">
                   <span class="text-on-surface-variant font-label font-bold text-[10px] uppercase tracking-widest">TÚ RECIBES</span>
-                  <div class="flex items-center gap-2 bg-surface-container-low py-2 px-4 rounded-full hover:bg-surface-container-low/80 transition-colors">
+                  <div class="flex items-center gap-2 bg-surface-container-high py-2 px-4 rounded-full shadow-sm hover:bg-surface-container-lowest transition-colors cursor-pointer">
                       <div class="w-5 h-5 rounded-full overflow-hidden">
                           <img id="icon-usd-inf" src="{{ url_for('static', filename='img/usa.png') }}" class="object-cover w-full h-full" alt="USD">
                           <img id="icon-bin-inf" src="{{ url_for('static', filename='img/binance.png') }}" class="hidden object-cover w-full h-full" alt="USDT">
@@ -117,7 +117,7 @@
                   </div>
               </div>
               <div class="flex items-baseline justify-between gap-4">
-                  <input type="text" id="toAmount" name="toAmount" step="0.01" min="0" class="bg-transparent text-on-surface font-headline font-extrabold text-[2rem] w-full truncate" placeholder="0.00" readonly inputmode="decimal">
+                  <input type="text" id="toAmount" name="toAmount" step="0.01" min="0" class="bg-transparent border-none p-0 focus:ring-0 outline-none text-on-surface font-headline font-extrabold text-[2rem] w-full placeholder-on-surface/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="0.00" readonly inputmode="decimal">
                   <span class="text-on-surface-variant font-headline font-bold text-xl" id="toCurrencySymbol"></span>
               </div>
 
