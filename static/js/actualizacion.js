@@ -7,6 +7,11 @@ const totalReceive = document.getElementById('totalReceive');
 const tasaDeCambio = document.getElementById('tasa-cambio');
 const botonLimpiador = document.getElementById('Boton-Limpiador');
 
+// Simbolos de monedas
+const fromCurrencySymbol = document.getElementById('fromCurrencySymbol');
+const toCurrencySymbol = document.getElementById('toCurrencySymbol');
+
+
 // Imagenes inferiores de To
 const imgBinanceInferior = document.getElementById('icon-bin-inf');
 const imgUSDInferior = document.getElementById('icon-usd-inf');
@@ -26,6 +31,11 @@ const body = document.body;
 let bcvRate = parseFloat(body.dataset.bcv);
 let usdtRate = parseFloat(body.dataset.usdt);
 let euroRate = parseFloat(body.dataset.euro);
+
+// Simbolos de monedas
+const moneyDolar = '$';
+const moneyBolivar = 'Bs';
+const moneyEuro = '€';
 
 // Evento para calcular en tiempo real
 toCurrency.addEventListener('change', () => {
@@ -52,24 +62,32 @@ function calculateTo() {
 
     // Mostrar icono según la moneda de origen
     if (fromCurr === 'VES') {
-        imgVESSuperior.classList.remove('hidden');
+        imgVESSuperior.classList.remove('hidden');      
+        fromCurrencySymbol.textContent = moneyBolivar
     } else if (fromCurr === 'USD') {
         imgUSDSuperior.classList.remove('hidden');
+        fromCurrencySymbol.textContent = moneyDolar
     } else if (fromCurr === 'USDT') {
         imgBinanceSuperior.classList.remove('hidden');
+        fromCurrencySymbol.textContent = moneyDolar
     } else if (fromCurr === 'EUR') {
         imgEURSuperior.classList.remove('hidden');
+        fromCurrencySymbol.textContent = moneyEuro
     }
 
     // Mostrar icono según la moneda de destino
     if (toCurr === 'USD') {
         imgUSDInferior.classList.remove('hidden');
+        toCurrencySymbol.textContent = moneyDolar
     } else if (toCurr === 'USDT') {
         imgBinanceInferior.classList.remove('hidden');
+        toCurrencySymbol.textContent = moneyDolar
     } else if (toCurr === 'EUR') {
         imgEURInferior.classList.remove('hidden');
+        toCurrencySymbol.textContent = moneyEuro
     } else if (toCurr === 'VES') {
         imgVESInferior.classList.remove('hidden');
+        toCurrencySymbol.textContent = moneyBolivar
     }
 
     // Calcular según las monedas
@@ -155,27 +173,8 @@ swapButton.addEventListener('click', () => {
     fromCurrency.value = valorTo;
     toCurrency.value = valorFrom;
     
-    // Actualizar icono de arriba según el nuevo valor de From (antes estaba en To)
-    if (valorTo === 'USD') {
-        imgUSDSuperior.classList.remove('hidden')
-    } else if (valorTo === 'USDT') {
-        imgBinanceSuperior.classList.remove('hidden')
-    } else if (valorTo === 'EUR') {
-        imgEURSuperior.classList.remove('hidden')
-    } else if (valorTo === 'VES') {
-        imgVESSuperior.classList.remove('hidden')
-    }
-
-    // Actualizar icono de abajo según el nuevo valor de To (antes estaba en From)
-    if (valorFrom === 'USD') {
-        imgUSDInferior.classList.remove('hidden')
-    } else if (valorFrom === 'USDT') {
-        imgBinanceInferior.classList.remove('hidden')
-    } else if (valorFrom === 'EUR') {
-        imgEURInferior.classList.remove('hidden')
-    } else if (valorFrom === 'VES') {
-        imgVESInferior.classList.remove('hidden')
-    }
+    // Llamo la funcion para cambiar imagenes y simbolos de monedas
+    calculateTo()
 
     // Limpiar inputs
     limpiarInput()
