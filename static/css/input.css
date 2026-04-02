@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 @font-face {
   font-family: 'Manrope';
@@ -52,118 +50,135 @@
   font-style: normal;
 }
 
-@layer base {
-  :root {
-    /* Dark Mode - Sovereign Exchange */
-    --color-primary: #3b82f6;
-    --color-primary-container: #1e3a8a;
-    --color-on-primary: #ffffff;
-    --color-on-primary-container: #bfdbfe;
-    --color-surface: #0b0e14;
-    --color-surface-container: #0f172a;
-    --color-surface-container-low: #111827;
-    --color-surface-container-lowest: #0f172a;
-    --color-surface-container-high: #1e293b;
-    --color-surface-container-highest: #334155;
-    --color-on-surface: #f8fafc;
-    --color-on-surface-variant: #94a3b8;
-    --color-secondary: #94a3b8;
-    --color-secondary-container: #1e293b;
-    --color-on-secondary-container: #414b82;
-    --color-error: #f87171;
-    --color-on-error: #ffffff;
-    --color-outline: #64748b;
-    --color-outline-variant: #334155;
-    --color-tertiary: #5c0900;
-    --color-tertiary-container: #841301;
-    --color-on-tertiary: #ffffff;
-    --color-on-tertiary-container: #ff8f78;
-  }
-
-  .light {
-    /* Light Mode - Sovereign Exchange */
-    --color-primary: #001f7f;
-    --color-primary-container: #0030b4;
-    --color-on-primary: #ffffff;
-    --color-on-primary-container: #98a9ff;
-    --color-surface: #f8f9fa;
-    --color-surface-container: #edeeef;
-    --color-surface-container-low: #f3f4f5;
-    --color-surface-container-lowest: #ffffff;
-    --color-surface-container-high: #e7e8e9;
-    --color-surface-container-highest: #e1e3e4;
-    --color-on-surface: #191c1d;
-    --color-on-surface-variant: #444655;
-    --color-secondary: #515a93;
-    --color-secondary-container: #b4bdfd;
-    --color-on-secondary-container: #414b82;
-    --color-error: #ba1a1a;
-    --color-on-error: #ffffff;
-    --color-outline: #757686;
-    --color-outline-variant: #c5c5d7;
-    --color-tertiary: #5c0900;
-    --color-tertiary-container: #ffdad3;
-    --color-on-tertiary: #ffffff;
-    --color-on-tertiary-container: #ff8f78;
-  }
-
-  html {
-    font-family: 'Manrope', system-ui, sans-serif;
-  }
-
-  body {
-    min-height: 100dvh;
-  }
+@theme {
+  --color-primary: #3b82f6;
+  --color-primary-container: #1e3a8a;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #bfdbfe;
+  --color-surface: #0b0e14;
+  --color-surface-container: #0f172a;
+  --color-surface-container-low: #111827;
+  --color-surface-container-lowest: #0f172a;
+  --color-surface-container-high: #1e293b;
+  --color-surface-container-highest: #334155;
+  --color-on-surface: #f8fafc;
+  --color-on-surface-variant: #94a3b8;
+  --color-secondary: #94a3b8;
+  --color-secondary-container: #1e293b;
+  --color-on-secondary-container: #414b82;
+  --color-error: #f87171;
+  --color-on-error: #ffffff;
+  --color-outline: #64748b;
+  --color-outline-variant: #334155;
+  --color-tertiary: #5c0900;
+  --color-tertiary-container: #841301;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #ff8f78;
 }
 
 @layer components {
-  .font-headline {
-    font-family: 'Manrope', system-ui, sans-serif;
-  }
-  
-  .font-body {
-    font-family: 'Manrope', system-ui, sans-serif;
-  }
-  
-  .font-label {
-    font-family: 'Manrope', system-ui, sans-serif;
-  }
-
-  .hide-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .hide-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  /* Material Symbols */
-  .material-symbols-outlined {
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  }
-
-  /* Custom Select Styling */
-  select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.25rem center;
-    background-size: 1.25rem;
-    padding-right: 2rem;
-  }
-
-  .light select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23444655'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-  }
-
-  /* Theme toggle icons */
-  .dark #themeToggle img {
+  .min-w-\[70px\] { min-width: 70px; }
+  .h-6 { height: 1.5rem; }
+  .w-6 { width: 1.5rem; }
+  .text-primary { color: var(--color-primary); }
+  .text-\[2\.75rem\] { font-size: 2.75rem; }
+  .mb-8 { margin-bottom: 2rem; }
+  .mt-10 { margin-top: 2.5rem; }
+  .p-3 { padding: 0.75rem; }
+  .gap-3 { gap: 0.75rem; }
+  .pl-2 { padding-left: 0.5rem; }
+  .pr-3 { padding-right: 0.75rem; }
+  .pr-4 { padding-right: 1rem; }
+  .pt-6 { padding-top: 1.5rem; }
+  .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  select option {
+    background: #1e293b;
     color: #f8fafc;
+    padding: 10px;
   }
-  .light #themeToggle img {
-    color: #191c1d;
+  select option:hover {
+    background: #334155;
   }
+}
+
+.light {
+  --color-primary: #001f7f;
+  --color-primary-container: #0030b4;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #98a9ff;
+  --color-surface: #f8f9fa;
+  --color-surface-container: #edeeef;
+  --color-surface-container-low: #f3f4f5;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-high: #e7e8e9;
+  --color-surface-container-highest: #e1e3e4;
+  --color-on-surface: #191c1d;
+  --color-on-surface-variant: #444655;
+  --color-secondary: #515a93;
+  --color-secondary-container: #b4bdfd;
+  --color-on-secondary-container: #414b82;
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-outline: #757686;
+  --color-outline-variant: #c5c5d7;
+  --color-tertiary: #5c0900;
+  --color-tertiary-container: #ffdad3;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #ff8f78;
+}
+
+html {
+  font-family: 'Manrope', system-ui, sans-serif;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+.font-headline {
+  font-family: 'Manrope', system-ui, sans-serif;
+}
+
+.font-body {
+  font-family: 'Manrope', system-ui, sans-serif;
+}
+
+.font-label {
+  font-family: 'Manrope', system-ui, sans-serif;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.25rem center;
+  background-size: 1.25rem;
+  padding-right: 2rem;
+}
+
+.light select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23444655'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+}
+
+.dark #themeToggle img {
+  color: #f8fafc;
+}
+
+.light #themeToggle img {
+  color: #191c1d;
 }
