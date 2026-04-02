@@ -2,6 +2,56 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Manrope';
+  src: url('../fonts/Manrope-Variable.woff2') format('woff2');
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  src: url('../fonts/material-symbols-outlined-latin-100-normal.woff2') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  src: url('../fonts/material-symbols-outlined-latin-200-normal.woff2') format('woff2');
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  src: url('../fonts/material-symbols-outlined-latin-300-normal.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  src: url('../fonts/material-symbols-outlined-latin-400-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  src: url('../fonts/material-symbols-outlined-latin-500-normal.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  src: url('../fonts/material-symbols-outlined-latin-600-normal.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  src: url('../fonts/material-symbols-outlined-latin-700-normal.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
 @layer base {
   :root {
     /* Dark Mode - Sovereign Exchange */
@@ -107,5 +157,13 @@
 
   .light select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23444655'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  }
+
+  /* Theme toggle icons */
+  .dark #themeToggle img {
+    color: #f8fafc;
+  }
+  .light #themeToggle img {
+    color: #191c1d;
   }
 }

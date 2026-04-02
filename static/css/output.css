@@ -991,6 +991,62 @@ select option:hover {
 	appearance: textfield
 }
 
+@font-face {
+	font-family: Manrope;
+	src: url(../fonts/Manrope-Variable.woff2) format("woff2");
+	font-weight: 200 800;
+	font-display: swap
+}
+
+@font-face {
+	font-family: Material Symbols Outlined;
+	src: url(../fonts/material-symbols-outlined-latin-100-normal.woff2) format("woff2");
+	font-weight: 100;
+	font-style: normal
+}
+
+@font-face {
+	font-family: Material Symbols Outlined;
+	src: url(../fonts/material-symbols-outlined-latin-200-normal.woff2) format("woff2");
+	font-weight: 200;
+	font-style: normal
+}
+
+@font-face {
+	font-family: Material Symbols Outlined;
+	src: url(../fonts/material-symbols-outlined-latin-300-normal.woff2) format("woff2");
+	font-weight: 300;
+	font-style: normal
+}
+
+@font-face {
+	font-family: Material Symbols Outlined;
+	src: url(../fonts/material-symbols-outlined-latin-400-normal.woff2) format("woff2");
+	font-weight: 400;
+	font-style: normal
+}
+
+@font-face {
+	font-family: Material Symbols Outlined;
+	src: url(../fonts/material-symbols-outlined-latin-500-normal.woff2) format("woff2");
+	font-weight: 500;
+	font-style: normal
+}
+
+@font-face {
+	font-family: Material Symbols Outlined;
+	src: url(../fonts/material-symbols-outlined-latin-600-normal.woff2) format("woff2");
+	font-weight: 600;
+	font-style: normal
+}
+
+@font-face {
+	font-family: Material Symbols Outlined;
+	src: url(../fonts/material-symbols-outlined-latin-700-normal.woff2) format("woff2");
+	font-weight: 700;
+	font-style: normal
+}
+
 .focus-within\:bg-surface-container-high:focus-within {
 	background-color: var(--color-surface-container-high)
 }
