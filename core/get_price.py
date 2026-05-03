@@ -84,7 +84,7 @@ def crear_ssl():
     return contexto
 
 # Funciona para hacer la consulta a la web del BCV
-async def obtener_dolar_bcv():
+async def obtener_valores_bcv():
     """Busca el dato con WebScrapping"""
 
     URL_BCV = os.getenv('URL_BCV')
@@ -102,44 +102,15 @@ async def obtener_dolar_bcv():
         soup = BeautifulSoup(respuesta, 'html.parser')
 
         valor_dolar = soup.find('div', id='dolar').find('strong').string
-
-        dolar_bcv = float(valor_dolar.replace(" ", "").replace(',', '.'))
-        
-        return round(dolar_bcv, 2), ''
-
-    except ssl.SSLError as e:
-        return 0, f"Error SSL con BCV {e}"
-    except asyncio.TimeoutError:
-        return 0, "Timeout consultando BCV"
-    except aiohttp.ClientError:
-        return 0, "Error de conexión con BCV"
-    except (AttributeError, ValueError):
-        return 0, "Error procesando datos del BCV"
-    
-
-# Funciona para hacer la consulta a la web del BCV
-async def obtener_euro_bcv():
-    """Busca el dato con WebScrapping"""
-
-    URL_BCV = os.getenv('URL_BCV')
-
-    ssl_contenido = crear_ssl()
-    
-    try:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(URL_BCV, headers=headers, timeout=10, ssl=ssl_contenido) as resp:
-                respuesta = await resp.text()
-
-        if resp.status != 200:
-            return 0, "BCV no disponible"
-
-        soup = BeautifulSoup(respuesta, 'html.parser')
-
         valor_euro = soup.find('div', id='euro').find('strong').string
 
         euro_bcv = float(valor_euro.replace(" ", "").replace(',', '.'))
+        dolar_bcv = float(valor_dolar.replace(" ", "").replace(',', '.'))
         
-        return round(euro_bcv, 2), ''
+        euro_bcv = round(euro_bcv, 2), ''
+        dolar_bcv = round(dolar_bcv, 2), ''
+
+        return euro_bcv, dolar_bcv
 
     except ssl.SSLError as e:
         return 0, f"Error SSL con BCV {e}"
@@ -149,20 +120,19 @@ async def obtener_euro_bcv():
         return 0, "Error de conexión con BCV"
     except (AttributeError, ValueError):
         return 0, "Error procesando datos del BCV"
-
+    
 # Usar en entorno local
 async def actualizacion_json():
 
-    price_usdt, price_dolar_bcv, price_euro_bcv = await asyncio.gather(
+    price_usdt, respusta_bcv = await asyncio.gather(
         obtener_valor_usdt(),
-        obtener_dolar_bcv(),
-        obtener_euro_bcv()
+        obtener_valores_bcv()
     )
 
     data = {
         "price_usdt": price_usdt,
-        "price_dolar_bcv": price_dolar_bcv,
-        "price_euro_bcv": price_euro_bcv
+        "price_dolar_bcv": respusta_bcv[0],
+        "price_euro_bcv": respusta_bcv[1]
     }
 
     try:
