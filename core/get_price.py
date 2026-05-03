@@ -110,7 +110,7 @@ async def obtener_valores_bcv():
         euro_bcv = round(euro_bcv, 2), ''
         dolar_bcv = round(dolar_bcv, 2), ''
 
-        return euro_bcv, dolar_bcv
+        return dolar_bcv, euro_bcv
 
     except ssl.SSLError as e:
         return 0, f"Error SSL con BCV {e}"
