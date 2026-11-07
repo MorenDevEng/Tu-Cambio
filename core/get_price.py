@@ -97,29 +97,33 @@ async def obtener_valores_bcv():
                 respuesta = await resp.text()
 
         if resp.status != 200:
-            return 0, "BCV no disponible"
+            return (0, "BCV no disponible"), (0, "BCV no disponible")
 
         soup = BeautifulSoup(respuesta, 'html.parser')
 
         valor_dolar = soup.find('div', id='dolar').find('strong').string
         valor_euro = soup.find('div', id='euro').find('strong').string
 
-        euro_bcv = float(valor_euro.replace(" ", "").replace(',', '.'))
-        dolar_bcv = float(valor_dolar.replace(" ", "").replace(',', '.'))
-        
-        euro_bcv = round(euro_bcv, 2), ''
-        dolar_bcv = round(dolar_bcv, 2), ''
+        # OJO: BCV usa formato europeo: '.' como miles y ',' como decimal
+        def parse_euro_number(value):
+            cleaned = value.strip().replace(' ', '')
+            if ',' in cleaned:
+                cleaned = cleaned.replace('.', '').replace(',', '.')
+            return round(float(cleaned), 2)
+
+        dolar_bcv = parse_euro_number(valor_dolar), ''
+        euro_bcv = parse_euro_number(valor_euro), ''
 
         return dolar_bcv, euro_bcv
 
     except ssl.SSLError as e:
-        return 0, f"Error SSL con BCV {e}"
+        return (0, f"Error SSL con BCV {e}"), (0, f"Error SSL con BCV {e}")
     except asyncio.TimeoutError:
-        return 0, "Timeout consultando BCV"
+        return (0, "Timeout consultando BCV"), (0, "Timeout consultando BCV")
     except aiohttp.ClientError:
-        return 0, "Error de conexión con BCV"
+        return (0, "Error de conexión con BCV"), (0, "Error de conexión con BCV")
     except (AttributeError, ValueError):
-        return 0, "Error procesando datos del BCV"
+        return (0, "Error procesando datos del BCV"), (0, "Error procesando datos del BCV")
     
 # Usar en entorno local
 async def actualizacion_json():
